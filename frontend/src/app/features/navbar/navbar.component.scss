@@ -1,0 +1,20 @@
+@import "palette";
+@import "variables";
+
+.navbar {
+  background-color: $background-primary-2;
+  color: $default-light-color;
+  height: 50px;
+}
+
+.app-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: $u-archivo-black-font;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

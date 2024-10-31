@@ -1,0 +1,12 @@
+<div class="breadcrumbs">
+  @for (breadcrumb of breadcrumbs$ | async; track $index) {
+  <span>
+    @if (breadcrumb.clickable) {
+    <a [routerLink]="breadcrumb.url">{{ breadcrumb.label }}</a>
+    <mat-icon class="separator">chevron_right</mat-icon>
+    } @else {
+    <span>{{ breadcrumb.label }}</span>
+    }
+  </span>
+  }
+</div>

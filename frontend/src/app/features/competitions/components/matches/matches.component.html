@@ -1,0 +1,106 @@
+<div class="container">
+  <div class="matches-content">
+    <mat-toolbar class="custom-toolbar">
+      <span class="section-title">Matches</span>
+    </mat-toolbar>
+    @if (loadingMatches$ | async) {
+    <div class="spinner-container">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    } @else {
+    <div class="matches-grid">
+      @for (match of matches$ | async; track $index) {
+      <div class="match-box" (click)="navigateToSelectedMatch(match)">
+        <div
+          class="teams"
+          [matTooltip]="match.home_team + ' - ' + match.away_team"
+          matTooltipClass="teams-tooltip"
+        >
+          {{ match.home_team }} - {{ match.away_team }}
+        </div>
+        <div class="stadium">{{ match.stadium }}</div>
+        <div class="score">
+          <div
+            class="score-box"
+            [ngClass]="{
+              win: match.home_score > match.away_score,
+              lose: match.home_score < match.away_score,
+              draw: match.home_score === match.away_score
+            }"
+          >
+            {{ match.home_score }}
+          </div>
+          <div class="separator">-</div>
+          <div
+            class="score-box"
+            [ngClass]="{
+              win: match.away_score > match.home_score,
+              lose: match.away_score < match.home_score,
+              draw: match.away_score === match.home_score
+            }"
+          >
+            {{ match.away_score }}
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <div class="sidebar">
+    @if (loadingTopPlayers$ | async) {
+    <div class="spinner-container">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    } @else {
+    <div class="top-players">
+      <span class="section-title">Most Goals</span>
+      @if (loadingTopScorers$ | async) {
+      <div class="spinner-container">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </div>
+      } @else {
+      <ul class="player-list">
+        @for (scorer of topScorers$ | async; track $index) {
+        <li class="player-item">
+          <img src="assets/icons/player.svg" class="player-image" />
+
+          <div class="player-details">
+            <div class="player-name">{{ scorer.player }}</div>
+            <div class="player-team">{{ scorer.team }}</div>
+          </div>
+
+          <div class="player-stat">{{ scorer.number }} goals</div>
+        </li>
+        }
+      </ul>
+      }
+    </div>
+
+    <div class="top-players">
+      <span class="section-title">Most Assists</span>
+      @if (loadingTopAssists$ | async) {
+      <div class="spinner-container">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </div>
+      } @else {
+      <ul class="player-list">
+        @for (player of topAssists$ | async; track $index) {
+        <li class="player-item">
+          <img src="assets/icons/player.svg" class="player-image" />
+
+          <div class="player-details">
+            <strong class="player-name">{{ player.player }}</strong>
+            <div class="player-team">{{ player.team }}</div>
+          </div>
+
+          <div class="player-stat">{{ player.number }} assists</div>
+        </li>
+        }
+      </ul>
+      }
+    </div>
+    }
+  </div>
+</div>

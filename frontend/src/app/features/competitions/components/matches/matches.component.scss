@@ -1,0 +1,157 @@
+@import "palette";
+
+:host {
+  height: calc(100% - 50px);
+  width: 100%;
+}
+
+.container {
+  padding: 0 20px 10px 20px;
+  height: calc(100% - 10px);
+  display: flex;
+  margin: auto;
+  gap: 10px;
+}
+
+.matches-content {
+  flex: 4;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 1px solid $deep-teal;
+
+  .matches-grid {
+    display: grid;
+    height: 100%;
+    padding: 10px;
+    overflow-y: auto;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 5px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+
+    .match-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: #444;
+      padding: 10px;
+      border-radius: 5px;
+      color: $default-light-color;
+      text-align: center;
+      min-width: 180px;
+      min-height: 120px;
+      max-height: 120px;
+      cursor: pointer;
+
+      .teams {
+        font-weight: bold;
+        margin-bottom: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .teams-tooltip {
+        text-transform: uppercase;
+      }
+
+      .stadium {
+        font-size: 0.9em;
+        margin-bottom: 5px;
+      }
+
+      .score {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2em;
+        gap: 5px;
+        margin-top: auto;
+
+        .score-box {
+          padding: 5px 10px;
+          border-radius: 4px;
+          font-size: 1.2em;
+          color: $default-light-color;
+          font-weight: bold;
+
+          &.win {
+            background-color: #28a745;
+          }
+
+          &.lose {
+            background-color: #dc3545;
+          }
+
+          &.draw {
+            background-color: $background-primary-5;
+          }
+        }
+
+        .separator {
+          font-size: 1.2em;
+          color: $default-light-color;
+        }
+      }
+    }
+  }
+}
+
+.sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #2c2c2c;
+  color: $default-light-color;
+
+  .top-players {
+    min-height: 300px;
+
+    .player-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .player-item {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .player-image {
+      width: 30px;
+      height: 30px;
+      margin-right: 12px;
+      border-radius: 50%;
+      background-color: #f0f0f0;
+    }
+
+    .player-details {
+      flex: 1;
+    }
+
+    .player-name {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .player-team {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .player-stat {
+      font-size: 14px;
+      font-weight: bold;
+      text-align: right;
+      white-space: nowrap;
+    }
+  }
+}

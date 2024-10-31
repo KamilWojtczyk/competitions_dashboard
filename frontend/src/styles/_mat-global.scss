@@ -1,0 +1,40 @@
+@import "palette";
+@import "variables";
+
+thead,
+.mat-mdc-header-row {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.mat-mdc-table {
+  tr.mat-mdc-row {
+    background-color: $rows-background-1 !important;
+
+    td {
+      font-family: $u-lex-and-deca-light-font;
+      text-transform: uppercase;
+      color: $default-light-color !important;
+    }
+  }
+}
+
+tbody {
+  display: block;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.mat-cell,
+.mat-header-cell {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

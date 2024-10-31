@@ -1,0 +1,57 @@
+<div class="container">
+  <mat-toolbar class="custom-toolbar">
+    <span class="section-title">Competitions</span>
+  </mat-toolbar>
+
+  <div class="table-container">
+    @if (loading$ | async) {
+    <div class="spinner-container">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    } @else { @if (competitions$ | async; as competitions) {
+    <table
+      mat-table
+      [dataSource]="competitions"
+      class="mat-elevation-z8"
+      height="500px"
+    >
+      <!-- Competition Name Column -->
+      <ng-container matColumnDef="competition_name">
+        <th mat-header-cell *matHeaderCellDef>Competition</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.competition_name }}
+        </td>
+      </ng-container>
+
+      <!-- Country Name Column -->
+      <ng-container matColumnDef="country_name">
+        <th mat-header-cell *matHeaderCellDef>Country</th>
+        <td mat-cell *matCellDef="let element">{{ element.country_name }}</td>
+      </ng-container>
+
+      <!-- Season Name Column -->
+      <ng-container matColumnDef="season_name">
+        <th mat-header-cell *matHeaderCellDef>Season</th>
+        <td mat-cell *matCellDef="let element">{{ element.season_name }}</td>
+      </ng-container>
+
+      <!-- Competition Gender Column -->
+      <ng-container matColumnDef="competition_gender">
+        <th mat-header-cell *matHeaderCellDef>Gender</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.competition_gender }}
+        </td>
+      </ng-container>
+
+      <!-- Header and Row Declarations -->
+      <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="onRowClick(row)"
+        style="cursor: pointer"
+      ></tr>
+    </table>
+    } }
+  </div>
+</div>

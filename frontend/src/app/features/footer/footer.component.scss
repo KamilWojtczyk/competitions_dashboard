@@ -1,0 +1,39 @@
+@import "palette";
+
+.footer {
+  background-color: $background-primary-2;
+  color: $default-light-color;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.footer-content {
+  text-align: center;
+  flex: 1;
+}
+
+.footer-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 8px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  color: $default-light-color;
+
+  &.linkedin {
+    background-image: url("/assets/icons/linkedin.svg");
+  }
+
+  &.github {
+    background-image: url("/assets/icons/github.svg");
+  }
+
+  &:hover {
+    filter: brightness(0.8); /* Darken on hover */
+  }
+}

@@ -1,0 +1,179 @@
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from statsbombpy import sb
+from datetime import datetime
+from typing import List
+from pydantic import TypeAdapter
+from models.competition_model import Competition
+from models.match_model import Match
+from models.top_players_model import TopPlayer
+from fastapi.concurrency import run_in_threadpool
+
+app = FastAPI()
+
+origins = [
+    "http://localhost:4200",  # Angular app running on this origin
+    # Add other origins if needed, e.g., production URLs
+]
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,            # List of allowed origins
+    allow_credentials=True,           # Whether to allow credentials (cookies, etc.)
+    allow_methods=["*"],               # List of allowed HTTP methods
+    allow_headers=["*"],               # List of allowed headers
+)
+
+@app.get("/api/competitions", response_model=List[Competition])
+async def get_competitions():
+    competitions_df = await run_in_threadpool(sb.competitions)
+    competitions_list = competitions_df.to_dict(orient='records')
+
+    # Process date fields to convert strings to datetime objects
+    for competition in competitions_list:
+        for date_field in ['match_updated', 'match_available']:
+            date_str = competition.get(date_field)
+            if date_str and isinstance(date_str, str):
+                try:
+                    competition[date_field] = datetime.fromisoformat(date_str)
+                except ValueError:
+                    competition[date_field] = None
+            else:
+                competition[date_field] = None
+
+    competitions_models = TypeAdapter(List[Competition]).validate_python(competitions_list)
+    return competitions_models
+
+@app.get("/api/matches", response_model=List[Match])
+async def get_matches(competition_id: int, season_id: int):
+    try:
+        matches_df = await run_in_threadpool(sb.matches, competition_id=competition_id, season_id=season_id)
+        matches_list = matches_df.to_dict(orient='records')
+
+        for match in matches_list:
+            # Parse 'match_date' to datetime
+            match_date_str = match.get('match_date')
+            if match_date_str:
+                try:
+                    match['match_date'] = datetime.fromisoformat(match_date_str)
+                except ValueError:
+                    match['match_date'] = datetime.strptime(match_date_str, '%Y-%m-%dT%H:%M:%S.%f')
+            else:
+                match['match_date'] = None
+
+            # Parse 'kick_off' to time
+            kick_off_str = match.get('kick_off')
+            if kick_off_str:
+                try:
+                    match['kick_off'] = datetime.strptime(kick_off_str, '%H:%M:%S.%f').time()
+                except ValueError:
+                    try:
+                        match['kick_off'] = datetime.strptime(kick_off_str, '%H:%M:%S').time()
+                    except ValueError:
+                        match['kick_off'] = None
+            else:
+                match['kick_off'] = None
+
+            # Parse 'last_updated' to datetime
+            last_updated_str = match.get('last_updated')
+            if last_updated_str:
+                try:
+                    match['last_updated'] = datetime.fromisoformat(last_updated_str)
+                except ValueError:
+                    match['last_updated'] = None
+            else:
+                match['last_updated'] = None
+
+            # Ensure 'match_week' is int
+            match_week = match.get('match_week')
+            if match_week is not None and match_week != '':
+                try:
+                    match['match_week'] = int(match_week)
+                except ValueError:
+                    match['match_week'] = None
+            else:
+                match['match_week'] = None
+
+            # Ensure 'match_status' is not None
+            match_status = match.get('match_status')
+            match['match_status'] = match_status if match_status != '' else 'Unknown'
+
+        matches_models = TypeAdapter(List[Match]).validate_python(matches_list)
+        return matches_models
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.get("/api/top_scorers", response_model=List[TopPlayer])
+async def get_top_scorers(country: str, division: str, season: str, gender: str):
+    try:
+        filters = {"type": "Shot"}
+        events_dict = await run_in_threadpool(
+            sb.competition_events,
+            country=country,
+            division=division,
+            season=season,
+            gender=gender,
+            filters=filters,
+            split=True
+        )
+        events = events_dict["shots"][["player", "team", "shot_outcome"]]
+
+        if events.empty:
+            return []
+        events = events[events["shot_outcome"] == "Goal"]
+
+        if events.empty:
+            return []
+
+        goal_counts = events.groupby(["player", "team"]).size().reset_index(name='number')
+        top_scorers_df = goal_counts.sort_values(by='number', ascending=False).head(5)
+        top_scorers = [
+            TopPlayer(player=row['player'], team=row['team'], number=row['number'])
+            for _, row in top_scorers_df.iterrows()
+        ]
+
+        return top_scorers
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.get("/api/top_assists", response_model=List[TopPlayer])
+async def get_top_assists(country: str, division: str, season: str, gender: str):
+    try:
+        filters = {"type": "Pass"}
+        events_dict = await run_in_threadpool(
+            sb.competition_events,
+            country=country,
+            division=division,
+            season=season,
+            gender=gender,
+            filters=filters,
+            split=True
+        )
+        events = events_dict["passes"][["player", "team", "pass_goal_assist"]]
+        
+        if events.empty:
+            return []
+
+        events = events[events["pass_goal_assist"] == True]
+
+        if events.empty:
+            return []
+
+        assist_counts = events.groupby(["player", "team"]).size().reset_index(name='number')
+        top_assists_df = assist_counts.sort_values(by='number', ascending=False).head(5)
+        top_assists = [
+            TopPlayer(player=row['player'], team=row['team'], number=row['number'])
+            for _, row in top_assists_df.iterrows()
+        ]
+
+        return top_assists
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Error fetching top assists: {str(e)} with filters country={country}, division={division}, season={season}, gender={gender}, filters={filters}"
+        )
+    

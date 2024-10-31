@@ -1,0 +1,60 @@
+@import "palette";
+@import "variables";
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: $background-primary-1;
+  color: $default-light-color;
+  font-family: $u-lex-and-deca-light-font !important;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.custom-toolbar {
+  background-color: $deep-teal !important;
+  color: $default-light-color !important;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding-left: 6px !important;
+  min-height: 50px !important;
+  height: 50px !important;
+}
+
+.section-title {
+  padding: 6px 10px !important;
+  background-color: #31000d !important;
+  border-radius: 8px !important;
+  text-transform: uppercase !important;
+  font-weight: bold !important;
+  box-shadow: none !important;
+  font-family: $u-archivo-black-font !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $background-primary-3;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: $background-primary-3;
+}
+
+::-webkit-scrollbar-track {
+  background-color: $background-primary-4;
+}
