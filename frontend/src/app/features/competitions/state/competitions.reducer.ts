@@ -15,6 +15,7 @@ import {
 } from './competitions.actions';
 import { Match } from '../models/match.model';
 import { TopPlayer } from '../models/top-players.model';
+import { Player } from '../models/player.model';
 
 export interface CompetitionsState {
   competitions: Competition[];
@@ -23,6 +24,8 @@ export interface CompetitionsState {
   matches: Match[];
   loadingMatches: boolean;
   playersStats: PlayersStatsState;
+  players: Player[];
+  loadingPlayers: boolean;
 }
 
 export interface PlayersStatsState {
@@ -48,12 +51,14 @@ export const initialState: CompetitionsState = {
   matches: undefined,
   loadingMatches: false,
   playersStats: playersStatsState,
+  players: undefined,
+  loadingPlayers: false,
 };
 
 export const competitionsReducer = createReducer(
   initialState,
-  on(loadCompetitions, (state) => ({
-    ...state,
+  on(loadCompetitions, () => ({
+    ...initialState,
     loadingCompetitions: true,
   })),
   on(loadCompetitionsSuccess, (state, { competitions }) => ({
@@ -73,12 +78,14 @@ export const competitionsReducer = createReducer(
 
   on(matchesScreenInitialied, (state) => ({
     ...state,
-    loadingMatches: true,
+    loadingMatches: !state.matches,
     playersStats: {
       ...state.playersStats,
-      loadingTopPlayers: true,
-      loadingTopScorers: true,
-      loadingTopAssists: true,
+      loadingTopPlayers: !(
+        state.playersStats.topScorers || state.playersStats.topAssists
+      ),
+      loadingTopScorers: !state.playersStats.topScorers,
+      loadingTopAssists: !state.playersStats.topAssists,
     },
   })),
   on(loadMatchesSuccess, (state, { matches }) => ({

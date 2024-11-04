@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Match } from '../models/match.model';
 import { TopPlayer } from '../models/top-players.model';
+import { Player } from '../models/player.model';
 
 @Injectable({ providedIn: 'root' })
 export class CompetitionsHttpService {
@@ -56,5 +57,13 @@ export class CompetitionsHttpService {
     return this.http.get<TopPlayer[]>(`${this.apiUrl}/top_assists`, {
       params,
     });
+  }
+
+  getPlayers(competition_id: number, season_id: number): Observable<Player[]> {
+    const params = new HttpParams()
+      .set('competition_id', competition_id?.toString())
+      .set('season_id', season_id?.toString());
+
+    return this.http.get<Player[]>(`${this.apiUrl}/players`, { params });
   }
 }

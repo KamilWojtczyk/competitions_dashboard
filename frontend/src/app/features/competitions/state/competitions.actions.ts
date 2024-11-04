@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Competition } from '../models/competition.model';
 import { Match } from '../models/match.model';
 import { TopPlayer } from '../models/top-players.model';
+import { Player } from '../models/player.model';
 
 export const loadCompetitions = createAction(
   '[Competitions] Load Competitions'
@@ -51,10 +52,13 @@ export const loadTopAssistsFailure = createAction(
   '[Matches Sidebar] Load Top Assists Failure'
 );
 
-export const loadTopPlayersSuccess = createAction(
-  '[Matches Sidebar] Load Top Players Success',
-  props<{ topScorers: TopPlayer[]; topAssists: TopPlayer[] }>()
+export const playersScreenInitialied = createAction(
+  '[Players screen] Players screen screen initialized'
 );
-export const loadTopPlayersFailure = createAction(
-  '[Matches Sidebar] Load Top Players Failure'
+export const loadPlayersSuccess = createAction(
+  '[Players screen] Load Players Success',
+  props<{ players: Player[] }>()
+);
+export const loadPlayersFailure = createAction(
+  '[Players screen] Load Players Failure'
 );

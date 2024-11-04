@@ -20,7 +20,7 @@ import {
 } from '../../state/competitions.actions';
 import { TopPlayer } from '../../models/top-players.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-matches',
@@ -31,6 +31,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatProgressSpinnerModule,
     MatTooltipModule,
     AsyncPipe,
+    RouterOutlet,
   ],
   templateUrl: './matches.component.html',
   styleUrl: './matches.component.scss',
@@ -70,5 +71,10 @@ export class MatchesComponent {
     console.log(match);
     this.store.dispatch(selectMatchButtonClicked({ selectedMatch: match }));
     this.router.navigate([match.match_id], { relativeTo: this.route });
+  }
+
+  navigateToPlayersScreen() {
+    console.log('ta');
+    this.router.navigate(['players'], { relativeTo: this.route });
   }
 }

@@ -18,8 +18,8 @@ class Match(BaseModel):
     competition_stage: Optional[str]
     stadium: Optional[str]
     referee: Optional[str]
-    home_managers: Optional[str]
-    away_managers: Optional[str]
+    home_managers: Optional[str] = None
+    away_managers: Optional[str] = None
 
     @model_validator(mode="before")
     def replace_nan_with_none(cls, values):

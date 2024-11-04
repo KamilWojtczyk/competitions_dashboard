@@ -73,6 +73,15 @@ export const selectTopAssistsLoading = createSelector(
   }
 );
 
+export const selectPlayers = createSelector(
+  selectCompetitionsState,
+  (state) => state.players
+);
+export const selectPlayersLoading = createSelector(
+  selectCompetitionsState,
+  (state) => state.loadingPlayers
+);
+
 //Breadcrumb selector
 export const selectBreadcrumbs = createSelector(
   selectCurrentRouteState,
@@ -101,10 +110,11 @@ export const selectBreadcrumbs = createSelector(
 
         if (segment === 'matches') {
           label = 'Matches';
-        } else if (segment === matchId.toString()) {
+        } else if (segment === matchId?.toString()) {
           const match = matches?.find((m) => m.match_id == matchId);
           label = match ? `${match.home_team} - ${match.away_team}` : 'Match';
         } else if (segment === 'players') {
+          console.log('ss');
           label = 'Players';
         } else {
           label = routeState.data['breadcrumb'] || segment;

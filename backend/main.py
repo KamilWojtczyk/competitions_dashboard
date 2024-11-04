@@ -7,6 +7,7 @@ from pydantic import TypeAdapter
 from models.competition_model import Competition
 from models.match_model import Match
 from models.top_players_model import TopPlayer
+from models.player_model import Player
 from fastapi.concurrency import run_in_threadpool
 
 app = FastAPI()
@@ -177,3 +178,43 @@ async def get_top_assists(country: str, division: str, season: str, gender: str)
             detail=f"Error fetching top assists: {str(e)} with filters country={country}, division={division}, season={season}, gender={gender}, filters={filters}"
         )
     
+@app.get("/api/players", response_model=List[Player])
+async def get_players(competition_id: int, season_id: int):
+    try:
+        # Retrieve matches for the competition and season
+        matches_df = await run_in_threadpool(sb.matches, competition_id=competition_id, season_id=season_id)
+        match_ids = matches_df['match_id'].tolist()
+
+        # Collect unique players across all matches
+        unique_players = {}
+        for match_id in match_ids:
+            # Fetch the lineup data for the current match
+            lineup_data = await run_in_threadpool(sb.lineups, match_id=match_id)
+            
+            # Iterate over each team in the lineup data
+            for team_name in lineup_data.keys():
+                team_df = lineup_data[team_name]  # Get DataFrame for each team
+                
+                # Process each player in the team's DataFrame
+                for _, row in team_df.iterrows():
+                    player_id = row['player_id']
+                    if player_id not in unique_players:
+                        # Add player only if they haven't been added before
+                        unique_players[player_id] = Player(
+                            player_id=row['player_id'],
+                            player_name=row['player_name'],
+                            player_nickname=row.get('player_nickname'),
+                            birth_date=row.get('birth_date'),
+                            player_gender=row.get('player_gender'),
+                            player_height=row.get('player_height'),
+                            player_weight=row.get('player_weight'),
+                            jersey_number=row.get('jersey_number'),
+                            country=row.get('country')
+                        )
+
+        # Return the unique players as a list
+        return list(unique_players.values())
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+

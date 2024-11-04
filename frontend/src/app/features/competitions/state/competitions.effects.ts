@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError,
-  debounce,
   debounceTime,
+  filter,
   map,
   of,
   switchMap,
@@ -15,16 +15,25 @@ import {
   loadCompetitionsSuccess,
   loadMatchesFailure,
   loadMatchesSuccess,
+  loadPlayersFailure,
+  loadPlayersSuccess,
   loadTopAssistsFailure,
   loadTopAssistsSuccess,
   loadTopScorersFailure,
   loadTopScorersSuccess,
   matchesScreenInitialied,
+  playersScreenInitialied,
 } from './competitions.actions';
 import { CompetitionsHttpService } from '../services/competitions-http.service';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
-import { selectSelectedCompetition } from './competitions.selectors';
+import {
+  selectMatches,
+  selectPlayers,
+  selectSelectedCompetition,
+  selectTopAssists,
+  selectTopScorers,
+} from './competitions.selectors';
 
 @Injectable()
 export class CompetitionsEffects {
@@ -49,7 +58,13 @@ export class CompetitionsEffects {
   loadMatches$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(matchesScreenInitialied),
-      concatLatestFrom(() => this.store.select(selectSelectedCompetition)),
+      concatLatestFrom(() => [
+        this.store.select(selectSelectedCompetition),
+        this.store.select(selectMatches),
+      ]),
+      filter(
+        ([_, selectedCompetition, matches]) => !!selectedCompetition && !matches
+      ),
       switchMap(([_, competition]) => {
         return this.competitionsHttpService
           .getMatches(competition?.competition_id, competition?.season_id)
@@ -64,7 +79,13 @@ export class CompetitionsEffects {
   loadTopScorers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadMatchesSuccess),
-      concatLatestFrom(() => this.store.select(selectSelectedCompetition)),
+      concatLatestFrom(() => [
+        this.store.select(selectSelectedCompetition),
+        this.store.select(selectTopScorers),
+      ]),
+      filter(([_, selectedCompetition, topScorers]) => {
+        return !!selectedCompetition && !topScorers;
+      }),
       switchMap(([_, competition]) =>
         this.competitionsHttpService
           .getTopScorers(
@@ -86,7 +107,14 @@ export class CompetitionsEffects {
     return this.actions$.pipe(
       ofType(loadMatchesSuccess),
       debounceTime(300),
-      concatLatestFrom(() => this.store.select(selectSelectedCompetition)),
+      concatLatestFrom(() => [
+        this.store.select(selectSelectedCompetition),
+        this.store.select(selectTopAssists),
+      ]),
+      filter(
+        ([_, selectedCompetition, topAssists]) =>
+          !!selectedCompetition && !topAssists
+      ),
       switchMap(([_, competition]) =>
         this.competitionsHttpService
           .getTopAssists(
@@ -99,6 +127,28 @@ export class CompetitionsEffects {
             takeUntil(this.actions$.pipe(ofType(loadCompetitions))),
             map((topAssists) => loadTopAssistsSuccess({ topAssists })),
             catchError(() => of(loadTopAssistsFailure()))
+          )
+      )
+    );
+  });
+
+  loadPlayers$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(playersScreenInitialied),
+      concatLatestFrom(() => [
+        this.store.select(selectSelectedCompetition),
+        this.store.select(selectPlayers),
+      ]),
+      filter(
+        ([_, selectedCompetition, players]) => !!selectedCompetition && !players
+      ),
+      switchMap(([_, competition]) =>
+        this.competitionsHttpService
+          .getPlayers(competition?.competition_id, competition?.season_id)
+          .pipe(
+            takeUntil(this.actions$.pipe(ofType(loadCompetitions))),
+            map((players) => loadPlayersSuccess({ players })),
+            catchError(() => of(loadPlayersFailure()))
           )
       )
     );
