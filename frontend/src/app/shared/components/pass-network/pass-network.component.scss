@@ -1,0 +1,28 @@
+@import "variables";
+
+::ng-deep {
+  .jersey-number-text {
+    font-family: $u-lex-and-deca-medium-font !important;
+    text-anchor: middle;
+  }
+
+  .tooltip {
+    font-family: $u-lex-and-deca-light-font;
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: auto;
+    padding: 4px;
+    font-size: 12px;
+    background: lightgray;
+    border: 1px solid black;
+    border-radius: 4px;
+    pointer-events: none;
+    color: black;
+  }
+
+  .pitch-text {
+    font-family: $u-lex-and-deca-bold-font;
+    text-anchor: middle;
+  }
+}

@@ -3,6 +3,7 @@ import { Competition } from '../models/competition.model';
 import { Match } from '../models/match.model';
 import { TopPlayer } from '../models/top-players.model';
 import { Player } from '../models/player.model';
+import { Events } from '../models/events.model';
 
 export const loadCompetitions = createAction(
   '[Competitions] Load Competitions'
@@ -61,4 +62,15 @@ export const loadPlayersSuccess = createAction(
 );
 export const loadPlayersFailure = createAction(
   '[Players screen] Load Players Failure'
+);
+
+export const selectedMatchScreenInitialied = createAction(
+  '[Selected Match screen] Selected match screen initialized'
+);
+export const loadMatchEventsSuccess = createAction(
+  '[Selected Match screen] Load Match Events Success',
+  props<{ events: Events[] }>()
+);
+export const loadMatchEventsFailure = createAction(
+  '[Selected Match screen] Load Match Events Failure'
 );

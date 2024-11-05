@@ -1,0 +1,17 @@
+@import "variables";
+
+::ng-deep {
+  .shot-map-container {
+    position: relative;
+  }
+
+  .tooltip {
+    position: absolute;
+    background-color: white;
+    padding: 5px;
+    border: 1px solid black;
+    pointer-events: none;
+    opacity: 0;
+    font-family: $u-lex-and-deca-light-font;
+  }
+}

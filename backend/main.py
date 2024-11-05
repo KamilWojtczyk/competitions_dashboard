@@ -4,10 +4,12 @@ from statsbombpy import sb
 from datetime import datetime
 from typing import List
 from pydantic import TypeAdapter
+import numpy as np
 from models.competition_model import Competition
 from models.match_model import Match
 from models.top_players_model import TopPlayer
 from models.player_model import Player
+from models.events_model import Event
 from fastapi.concurrency import run_in_threadpool
 
 app = FastAPI()
@@ -216,5 +218,23 @@ async def get_players(competition_id: int, season_id: int):
         return list(unique_players.values())
 
     except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+
+@app.get("/api/match_events", response_model=List[Event])
+async def get_match_events(match_id: int):
+    try:
+        events_df = await run_in_threadpool(sb.events, match_id=match_id)
+        
+        # Replace NaN with None before converting to dict
+        events_df = events_df.replace({np.nan: None})
+        
+        events_list = events_df.to_dict(orient='records')
+        events_models = TypeAdapter(List[Event]).validate_python(events_list)
+        
+        return events_models
+
+    except Exception as e:
+        print("Error fetching events:", e)
         raise HTTPException(status_code=400, detail=str(e))
 

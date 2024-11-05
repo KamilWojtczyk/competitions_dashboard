@@ -6,16 +6,23 @@ import {
   loadCompetitionsSuccess,
   loadMatchesFailure,
   loadMatchesSuccess,
+  loadMatchEventsSuccess,
+  loadPlayersFailure,
+  loadPlayersSuccess,
   loadTopAssistsFailure,
   loadTopAssistsSuccess,
   loadTopScorersFailure,
   loadTopScorersSuccess,
   matchesScreenInitialied,
+  playersScreenInitialied,
   selectCompetitionButtonClicked,
+  selectedMatchScreenInitialied,
+  selectMatchButtonClicked,
 } from './competitions.actions';
 import { Match } from '../models/match.model';
 import { TopPlayer } from '../models/top-players.model';
 import { Player } from '../models/player.model';
+import { Events } from '../models/events.model';
 
 export interface CompetitionsState {
   competitions: Competition[];
@@ -23,6 +30,9 @@ export interface CompetitionsState {
   loadingCompetitions: boolean;
   matches: Match[];
   loadingMatches: boolean;
+  selectedMatch: Match;
+  selectedMatchEvents: Events[];
+  matchEventsLoading: boolean;
   playersStats: PlayersStatsState;
   players: Player[];
   loadingPlayers: boolean;
@@ -50,6 +60,9 @@ export const initialState: CompetitionsState = {
   loadingCompetitions: false,
   matches: undefined,
   loadingMatches: false,
+  selectedMatch: undefined,
+  selectedMatchEvents: undefined,
+  matchEventsLoading: false,
   playersStats: playersStatsState,
   players: undefined,
   loadingPlayers: false,
@@ -98,6 +111,11 @@ export const competitionsReducer = createReducer(
     loadingMatches: false,
   })),
 
+  on(selectMatchButtonClicked, (state, { selectedMatch }) => ({
+    ...state,
+    selectedMatch,
+  })),
+
   on(loadTopScorersSuccess, (state, { topScorers }) => ({
     ...state,
     playersStats: {
@@ -132,5 +150,33 @@ export const competitionsReducer = createReducer(
       loadingTopAssists: false,
       loadingTopPlayers: false,
     },
+  })),
+
+  on(playersScreenInitialied, (state) => ({
+    ...state,
+    loadingPlayers: !state.players,
+  })),
+  on(loadPlayersSuccess, (state, { players }) => ({
+    ...state,
+    players,
+    loadingPlayers: false,
+  })),
+  on(loadPlayersFailure, (state) => ({
+    ...state,
+    loadingPlayers: false,
+  })),
+
+  on(selectedMatchScreenInitialied, (state) => ({
+    ...state,
+    matchEventsLoading: true,
+  })),
+  on(loadMatchEventsSuccess, (state, { events }) => ({
+    ...state,
+    selectedMatchEvents: events,
+    matchEventsLoading: false,
+  })),
+  on(loadPlayersFailure, (state) => ({
+    ...state,
+    matchEventsLoading: false,
   }))
 );

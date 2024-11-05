@@ -1,1 +1,27 @@
-<p>Players</p>
+<div class="container">
+  <div class="players-content">
+    <mat-toolbar class="custom-toolbar">
+      <span class="section-title">Players</span>
+    </mat-toolbar>
+    @if (loadingPlayers$ | async) {
+    <div class="spinner-container">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    } @else {
+    <div class="players-grid">
+      @for (player of players$ | async; track $index) {
+      <div class="player-box" (click)="navigateToSelectedPlayer(player)">
+        <div
+          class="name"
+          [matTooltip]="player.player_name"
+          matTooltipClass="teams-tooltip"
+        >
+          {{ player.jersey_number }} {{ player.player_name }}
+        </div>
+        <div class="country">{{ player.country }}</div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

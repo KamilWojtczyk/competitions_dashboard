@@ -1,3 +1,71 @@
+@import "variables";
+
 :host {
-  height: 100%;
+  height: calc(100% - 50px);
+  width: 100%;
+}
+
+.container {
+  padding: 0 20px 10px 20px;
+  height: calc(100% - 10px);
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  gap: 10px;
+
+  .match-details {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+
+    .team-logo {
+      width: 100px;
+      height: 100px;
+
+      .team-logo-img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .match-info {
+      text-align: center;
+      margin: 0 20px;
+
+      .competition-name {
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+
+      .teams {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+
+        .team-name {
+          font-size: 1.2em;
+          margin: 0 10px;
+        }
+
+        .score {
+          font-size: 1.5em;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .pitch-components {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+
+    .name {
+      font-size: 16px;
+      font-family: $u-lex-and-deca-medium-font;
+    }
+  }
 }

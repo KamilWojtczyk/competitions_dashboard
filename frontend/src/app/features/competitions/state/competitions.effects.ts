@@ -15,6 +15,8 @@ import {
   loadCompetitionsSuccess,
   loadMatchesFailure,
   loadMatchesSuccess,
+  loadMatchEventsFailure,
+  loadMatchEventsSuccess,
   loadPlayersFailure,
   loadPlayersSuccess,
   loadTopAssistsFailure,
@@ -23,6 +25,7 @@ import {
   loadTopScorersSuccess,
   matchesScreenInitialied,
   playersScreenInitialied,
+  selectedMatchScreenInitialied,
 } from './competitions.actions';
 import { CompetitionsHttpService } from '../services/competitions-http.service';
 import { concatLatestFrom } from '@ngrx/operators';
@@ -31,6 +34,7 @@ import {
   selectMatches,
   selectPlayers,
   selectSelectedCompetition,
+  selectSelectedMatch,
   selectTopAssists,
   selectTopScorers,
 } from './competitions.selectors';
@@ -150,6 +154,19 @@ export class CompetitionsEffects {
             map((players) => loadPlayersSuccess({ players })),
             catchError(() => of(loadPlayersFailure()))
           )
+      )
+    );
+  });
+
+  loadMatchEvents$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(selectedMatchScreenInitialied),
+      concatLatestFrom(() => [this.store.select(selectSelectedMatch)]),
+      switchMap(([_, match]) =>
+        this.competitionsHttpService.getMatchEvents(match?.match_id).pipe(
+          map((events) => loadMatchEventsSuccess({ events })),
+          catchError(() => of(loadMatchEventsFailure()))
+        )
       )
     );
   });

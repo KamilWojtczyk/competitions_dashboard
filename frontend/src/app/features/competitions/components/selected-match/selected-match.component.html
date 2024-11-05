@@ -1,1 +1,61 @@
-<p>Selected match</p>
+@if (selectedMatch$ | async; as selectedMatch) {
+<div class="container">
+  <div class="match-details">
+    <div class="team-logo">
+      <img src="assets/icons/shield.svg" class="team-logo-img" />
+    </div>
+
+    <div class="match-info">
+      <div class="competition-name">{{ selectedMatch.competition }}</div>
+      <div class="teams">
+        <span class="team-name">{{ selectedMatch.home_team }}</span>
+        <span class="score">
+          {{ selectedMatch.home_score }} - {{ selectedMatch.away_score }}
+        </span>
+        <span class="team-name">{{ selectedMatch.away_team }}</span>
+      </div>
+    </div>
+
+    <div class="team-logo">
+      <img src="assets/icons/shield.svg" class="team-logo-img" />
+    </div>
+  </div>
+
+  @if (matchEvents$ | async; as matchEvents) {
+  <div class="pitch-components">
+    <div>
+      <div class="name">{{ selectedMatch?.home_team }} Shot Map</div>
+      <app-shot-map
+        [events]="matchEvents"
+        [teamName]="selectedMatch?.home_team"
+      ></app-shot-map>
+    </div>
+
+    <div>
+      <div class="name">{{ selectedMatch?.home_team }} Pass Network</div>
+      <app-pass-network
+        [events]="matchEvents"
+        [teamName]="selectedMatch?.home_team"
+      ></app-pass-network>
+    </div>
+
+    <div>
+      <div class="name">{{ selectedMatch?.away_team }} Pass Network</div>
+      <app-pass-network
+        [events]="matchEvents"
+        [teamName]="selectedMatch?.away_team"
+      ></app-pass-network>
+    </div>
+
+    <div>
+      <div class="name">{{ selectedMatch?.away_team }} Shot Map</div>
+      <app-shot-map
+        [events]="matchEvents"
+        [teamName]="selectedMatch?.away_team"
+      ></app-shot-map>
+    </div>
+  </div>
+  }
+</div>
+
+}

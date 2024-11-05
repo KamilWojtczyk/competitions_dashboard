@@ -68,13 +68,11 @@ export class MatchesComponent {
   }
 
   navigateToSelectedMatch(match: Match) {
-    console.log(match);
     this.store.dispatch(selectMatchButtonClicked({ selectedMatch: match }));
     this.router.navigate([match.match_id], { relativeTo: this.route });
   }
 
   navigateToPlayersScreen() {
-    console.log('ta');
     this.router.navigate(['players'], { relativeTo: this.route });
   }
 }

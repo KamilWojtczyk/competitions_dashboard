@@ -32,6 +32,14 @@ export const selectMatchesLoading = createSelector(
   (state) => state.loadingMatches
 );
 
+export const selectSelectedMatch = createSelector(
+  selectCompetitionsState,
+  (state) => {
+    if (!state.selectedMatch) return undefined;
+    return state.selectedMatch;
+  }
+);
+
 export const selectPlayersStats = createSelector(
   selectCompetitionsState,
   (state) => state.playersStats
@@ -80,6 +88,15 @@ export const selectPlayers = createSelector(
 export const selectPlayersLoading = createSelector(
   selectCompetitionsState,
   (state) => state.loadingPlayers
+);
+
+export const selectMatchEvents = createSelector(
+  selectCompetitionsState,
+  (state) => state.selectedMatchEvents
+);
+export const selectMatchEventsLoading = createSelector(
+  selectCompetitionsState,
+  (state) => state.matchEventsLoading
 );
 
 //Breadcrumb selector

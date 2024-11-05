@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { Match } from '../models/match.model';
 import { TopPlayer } from '../models/top-players.model';
 import { Player } from '../models/player.model';
+import { Events } from '../models/events.model';
 
 @Injectable({ providedIn: 'root' })
 export class CompetitionsHttpService {
@@ -65,5 +66,10 @@ export class CompetitionsHttpService {
       .set('season_id', season_id?.toString());
 
     return this.http.get<Player[]>(`${this.apiUrl}/players`, { params });
+  }
+
+  getMatchEvents(matchId: number): Observable<Events[]> {
+    const params = new HttpParams().set('match_id', matchId?.toString());
+    return this.http.get<Events[]>(`${this.apiUrl}/match_events`, { params });
   }
 }
