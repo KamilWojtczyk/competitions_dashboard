@@ -168,6 +168,7 @@ export const competitionsReducer = createReducer(
 
   on(selectedMatchScreenInitialied, (state) => ({
     ...state,
+    selectedMatchEvents: undefined,
     matchEventsLoading: true,
   })),
   on(loadMatchEventsSuccess, (state, { events }) => ({

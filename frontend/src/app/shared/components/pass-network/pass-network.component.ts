@@ -6,6 +6,7 @@ import {
   ElementRef,
   ViewChild,
   AfterViewInit,
+  input,
 } from '@angular/core';
 import * as d3 from 'd3';
 import { Events } from '../../../features/competitions/models/events.model';
@@ -27,8 +28,8 @@ import { PitchComponent } from '../pitch/pitch.component';
   styleUrls: ['./pass-network.component.scss'],
 })
 export class PassNetworkComponent implements OnChanges, AfterViewInit {
-  @Input() events: Events[] = [];
-  @Input() teamName!: string;
+  events = input.required<Events[]>();
+  teamName = input.required<string>();
 
   @ViewChild('passNetworkContainer', { static: true })
   containerRef!: ElementRef;
@@ -44,7 +45,7 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initializeSvg();
-    if (this.events.length > 0) {
+    if (this.events().length > 0) {
       this.createPassNetwork();
     }
   }
@@ -73,7 +74,7 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
       .selectAll('.pass-line, .player-node, .jersey-number-text')
       .remove();
 
-    const eventsWithNewSecond = this.events.map((event) => ({
+    const eventsWithNewSecond = this.events().map((event) => ({
       ...event,
       newsecond: event.minute * 60 + event.second,
     }));
@@ -82,13 +83,13 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
     eventsWithNewSecond.sort((a, b) => a.newsecond - b.newsecond);
 
     const teamEvents = eventsWithNewSecond.filter(
-      (event) => event.team === this.teamName
+      (event) => event.team === this.teamName()
     );
 
     // Collect jersey numbers from all tactics events
     const tacticsEvents = eventsWithNewSecond.filter(
       (event) =>
-        event.team === this.teamName && event.tactics && event.tactics.lineup
+        event.team === this.teamName() && event.tactics && event.tactics.lineup
     );
 
     const jerseyNumberMap: { [playerId: string]: string } = {};
@@ -113,7 +114,7 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
 
     // Extract passes before the first substitution
     const subEvents = eventsWithNewSecond.filter(
-      (event) => event.team === this.teamName && event.type === 'Substitution'
+      (event) => event.team === this.teamName() && event.type === 'Substitution'
     );
 
     // Find time of the team's first substitution
@@ -187,11 +188,11 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
     );
 
     // Identify players who didn't make any passes
-    const startingPlayerIds = tacticsEvents[0].tactics.lineup.map(
+    const startingPlayerIds = tacticsEvents[0]?.tactics.lineup.map(
       (player: any) => player.player.id.toString()
     );
 
-    startingPlayerIds.forEach((playerId) => {
+    startingPlayerIds?.forEach((playerId) => {
       if (!playerPositionsMap.has(playerId)) {
         // Assign default position (e.g., center of the pitch)
         const jerseyNumber = jerseyNumberMap[playerId] || '';

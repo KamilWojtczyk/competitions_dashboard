@@ -1,0 +1,79 @@
+@import "variables";
+@import "palette";
+
+.match-stats {
+  margin: 20px auto;
+  width: 100%;
+  max-width: 600px;
+  border-collapse: collapse;
+  font-family: $u-lex-and-deca-medium-font;
+
+  .stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+  }
+
+  .stats-header {
+    font-weight: bold;
+  }
+
+  .stats-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+  }
+
+  .stats-section {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .team-name,
+  .team-stat,
+  .stat-name {
+    width: 33%;
+    text-align: center;
+  }
+
+  .team-name {
+    font-size: 16px;
+  }
+
+  .stat-name {
+    font-size: 14px;
+    color: $text-primary-3;
+  }
+
+  .team-stat {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .stat-bar-container {
+    display: flex;
+    width: 100%;
+    height: 8px;
+    background-color: #eee;
+    margin-top: 4px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .team1-bar,
+  .team2-bar {
+    height: 100%;
+  }
+
+  .team1-bar {
+    background-color: #d32f2f; // Red for Team 1
+  }
+
+  .team2-bar {
+    background-color: #2196f3; // Blue for Team 2
+  }
+}

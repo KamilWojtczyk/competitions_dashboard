@@ -51,17 +51,25 @@
       ></app-pass-network>
     </div>
 
-    <div class="shot-map">
-      <div class="name">Shot Map</div>
-      <div class="teams">
-        <span>{{ selectedMatch?.away_team }}</span>
-        <span>{{ selectedMatch?.home_team }}</span>
+    <div>
+      <app-match-stats
+        [statistics]="statistics$ | async"
+        [homeTeamName]="selectedMatch.home_team"
+        [awayTeamName]="selectedMatch.away_team"
+      ></app-match-stats>
+
+      <div class="shot-map">
+        <div class="name">Shot Map</div>
+        <div class="teams">
+          <span>{{ selectedMatch?.away_team }}</span>
+          <span>{{ selectedMatch?.home_team }}</span>
+        </div>
+        <app-shot-map
+          [events]="matchEvents"
+          [homeTeamName]="selectedMatch?.home_team"
+          [awayTeamName]="selectedMatch?.away_team"
+        ></app-shot-map>
       </div>
-      <app-shot-map
-        [events]="matchEvents"
-        [homeTeamName]="selectedMatch?.home_team"
-        [awayTeamName]="selectedMatch?.away_team"
-      ></app-shot-map>
     </div>
 
     <div>
@@ -73,6 +81,10 @@
     </div>
   </div>
 
+  } @else {
+  <div class="spinner-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
   }
 </div>
 

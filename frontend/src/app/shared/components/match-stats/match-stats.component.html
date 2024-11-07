@@ -1,0 +1,27 @@
+<div class="match-stats">
+  <div class="stats-header">
+    <div class="team-name">{{ homeTeamName() }}</div>
+    <div class="stat-name">Statistics</div>
+    <div class="team-name">{{ awayTeamName() }}</div>
+  </div>
+  @if (statistics()) { @for (stat of statistics(); track $index) {
+  <div class="stats-row">
+    <div class="stats-section">
+      <div class="team-stat">{{ stat.team1Value }}</div>
+      <div class="stat-name">{{ stat.name }}</div>
+      <div class="team-stat">{{ stat.team2Value }}</div>
+    </div>
+
+    <div class="stat-bar-container">
+      <div
+        class="team1-bar"
+        [style.width.%]="calculateBarWidth(stat.team1Value, stat.team2Value)"
+      ></div>
+      <div
+        class="team2-bar"
+        [style.width.%]="calculateBarWidth(stat.team2Value, stat.team1Value)"
+      ></div>
+    </div>
+  </div>
+  } }
+</div>

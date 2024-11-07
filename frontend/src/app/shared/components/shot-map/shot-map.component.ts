@@ -1,11 +1,11 @@
 import {
   Component,
-  Input,
   OnChanges,
   SimpleChanges,
   ElementRef,
   ViewChild,
   AfterViewInit,
+  input,
 } from '@angular/core';
 import * as d3 from 'd3';
 import { Events } from '../../../features/competitions/models/events.model';
@@ -23,10 +23,9 @@ import { PitchComponent } from '../pitch/pitch.component';
   `,
 })
 export class ShotMapComponent implements OnChanges, AfterViewInit {
-  @Input() events: Events[] = [];
-  @Input() homeTeamName!: string;
-  @Input() awayTeamName!: string;
-
+  events = input.required<Events[]>();
+  homeTeamName = input.required<string>();
+  awayTeamName = input.required<string>();
   @ViewChild('shotMapContainer', { static: true })
   containerRef!: ElementRef;
 
@@ -44,11 +43,13 @@ export class ShotMapComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initializeSvg();
-    this.createShotMap();
+    if (this.events().length > 0) {
+      this.createShotMap();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['events'] && this.events.length > 0) {
+    if (changes['events'] && !changes['events'].firstChange) {
       if (this.svg) {
         this.createShotMap();
       }
@@ -77,11 +78,11 @@ export class ShotMapComponent implements OnChanges, AfterViewInit {
     this.svg.selectAll('.shot').remove();
 
     // Filter for shots by both teams
-    const shots = this.events
+    const shots = this.events()
       .filter(
         (event) =>
-          (event.team === this.homeTeamName ||
-            event.team === this.awayTeamName) &&
+          (event.team === this.homeTeamName() ||
+            event.team === this.awayTeamName()) &&
           event.type === 'Shot' &&
           event.period < 5
       )
@@ -89,7 +90,7 @@ export class ShotMapComponent implements OnChanges, AfterViewInit {
         let [x, y] = shot.location;
 
         // Flip coordinates for away team
-        if (shot.team === this.awayTeamName) {
+        if (shot.team === this.awayTeamName()) {
           x = this.pitchLength - x;
           y = this.pitchWidth - y;
         }
