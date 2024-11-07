@@ -8,14 +8,20 @@ import {
   selectSelectedMatch,
 } from '../../state/competitions.selectors';
 import { selectedMatchScreenInitialied } from '../../state/competitions.actions';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
 import { PassNetworkComponent } from '../../../../shared/components/pass-network/pass-network.component';
 import { ShotMapComponent } from '../../../../shared/components/shot-map/shot-map.component';
 
 @Component({
   selector: 'app-selected-match',
   standalone: true,
-  imports: [AsyncPipe, PassNetworkComponent, ShotMapComponent],
+  imports: [
+    CommonModule,
+    NgClass,
+    AsyncPipe,
+    PassNetworkComponent,
+    ShotMapComponent,
+  ],
   templateUrl: './selected-match.component.html',
   styleUrl: './selected-match.component.scss',
 })

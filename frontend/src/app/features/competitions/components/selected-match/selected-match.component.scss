@@ -3,11 +3,13 @@
 :host {
   height: calc(100% - 50px);
   width: 100%;
+  overflow: hidden;
 }
 
 .container {
   padding: 0 20px 10px 20px;
-  height: calc(100% - 10px);
+  overflow-y: auto;
+  height: calc(100% - 40px);
   display: flex;
   flex-direction: column;
   margin: auto;
@@ -57,15 +59,31 @@
     }
   }
 
-  .pitch-components {
+  .pitch-container {
     display: flex;
     gap: 20px;
     align-items: center;
     justify-content: center;
 
     .name {
+      text-align: center;
       font-size: 16px;
       font-family: $u-lex-and-deca-medium-font;
+    }
+
+    .shot-map {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      .teams {
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+        font-family: $u-lex-and-deca-medium-font;
+        width: 100%;
+      }
     }
   }
 }

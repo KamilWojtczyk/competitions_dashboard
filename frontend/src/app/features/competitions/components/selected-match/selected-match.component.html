@@ -9,9 +9,29 @@
       <div class="competition-name">{{ selectedMatch.competition }}</div>
       <div class="teams">
         <span class="team-name">{{ selectedMatch.home_team }}</span>
-        <span class="score">
-          {{ selectedMatch.home_score }} - {{ selectedMatch.away_score }}
-        </span>
+        <div class="score">
+          <div
+            class="score-box"
+            [ngClass]="{
+              win: selectedMatch.home_score > selectedMatch.away_score,
+              lose: selectedMatch.home_score < selectedMatch.away_score,
+              draw: selectedMatch.home_score === selectedMatch.away_score
+            }"
+          >
+            {{ selectedMatch.home_score }}
+          </div>
+          <div class="separator">-</div>
+          <div
+            class="score-box"
+            [ngClass]="{
+              win: selectedMatch.away_score > selectedMatch.home_score,
+              lose: selectedMatch.away_score < selectedMatch.home_score,
+              draw: selectedMatch.away_score === selectedMatch.home_score
+            }"
+          >
+            {{ selectedMatch.away_score }}
+          </div>
+        </div>
         <span class="team-name">{{ selectedMatch.away_team }}</span>
       </div>
     </div>
@@ -22,21 +42,26 @@
   </div>
 
   @if (matchEvents$ | async; as matchEvents) {
-  <div class="pitch-components">
-    <div>
-      <div class="name">{{ selectedMatch?.home_team }} Shot Map</div>
-      <app-shot-map
-        [events]="matchEvents"
-        [teamName]="selectedMatch?.home_team"
-      ></app-shot-map>
-    </div>
-
+  <div class="pitch-container">
     <div>
       <div class="name">{{ selectedMatch?.home_team }} Pass Network</div>
       <app-pass-network
         [events]="matchEvents"
         [teamName]="selectedMatch?.home_team"
       ></app-pass-network>
+    </div>
+
+    <div class="shot-map">
+      <div class="name">Shot Map</div>
+      <div class="teams">
+        <span>{{ selectedMatch?.away_team }}</span>
+        <span>{{ selectedMatch?.home_team }}</span>
+      </div>
+      <app-shot-map
+        [events]="matchEvents"
+        [homeTeamName]="selectedMatch?.home_team"
+        [awayTeamName]="selectedMatch?.away_team"
+      ></app-shot-map>
     </div>
 
     <div>
@@ -46,15 +71,8 @@
         [teamName]="selectedMatch?.away_team"
       ></app-pass-network>
     </div>
-
-    <div>
-      <div class="name">{{ selectedMatch?.away_team }} Shot Map</div>
-      <app-shot-map
-        [events]="matchEvents"
-        [teamName]="selectedMatch?.away_team"
-      ></app-shot-map>
-    </div>
   </div>
+
   }
 </div>
 

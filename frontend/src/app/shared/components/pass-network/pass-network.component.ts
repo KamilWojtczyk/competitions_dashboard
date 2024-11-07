@@ -15,7 +15,11 @@ import { PitchComponent } from '../pitch/pitch.component';
   selector: 'app-pass-network',
   template: `
     <div #passNetworkContainer class="pass-network-container">
-      <app-pitch [width]="width" [height]="height"></app-pitch>
+      <app-pitch
+        [width]="width"
+        [height]="height"
+        [orientation]="'vertical'"
+      ></app-pitch>
     </div>
   `,
   standalone: true,
@@ -29,8 +33,8 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
   @ViewChild('passNetworkContainer', { static: true })
   containerRef!: ElementRef;
 
-  width = 500;
-  height = 330;
+  width = 330;
+  height = 500;
 
   private svg: any;
   private xScale: any;
@@ -56,8 +60,8 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
   initializeSvg(): void {
     this.svg = d3.select(this.containerRef.nativeElement).select('svg');
 
-    this.xScale = d3.scaleLinear().domain([0, 120]).range([0, this.width]);
-    this.yScale = d3.scaleLinear().domain([0, 80]).range([0, this.height]);
+    this.xScale = d3.scaleLinear().domain([0, 80]).range([0, this.width]);
+    this.yScale = d3.scaleLinear().domain([0, 120]).range([0, this.height]);
   }
 
   async createPassNetwork(): Promise<void> {
@@ -152,7 +156,7 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
         playerPositionsMap.set(playerId, { x: 0, y: 0, count: 0 });
       }
       const playerData = playerPositionsMap.get(playerId)!;
-      playerData.x += pass.location[0];
+      playerData.x += 120 - pass.location[0];
       playerData.y += pass.location[1];
       playerData.count += 1;
     });
@@ -194,8 +198,8 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
         const playerName = playerIdToNameMap[playerId] || '';
         playerPositions.push({
           id: playerId,
-          x: 60, // Center x-coordinate
-          y: 40, // Center y-coordinate
+          x: 60,
+          y: 40,
           count: 0,
           jerseyNumber,
           playerName,
@@ -256,10 +260,10 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
       .enter()
       .append('line')
       .attr('class', 'pass-line')
-      .attr('x1', (d) => this.xScale(nodes.find((n) => n.id === d.source)!.x))
-      .attr('y1', (d) => this.yScale(nodes.find((n) => n.id === d.source)!.y))
-      .attr('x2', (d) => this.xScale(nodes.find((n) => n.id === d.target)!.x))
-      .attr('y2', (d) => this.yScale(nodes.find((n) => n.id === d.target)!.y))
+      .attr('x1', (d) => this.xScale(nodes.find((n) => n.id === d.source)!.y))
+      .attr('y1', (d) => this.yScale(nodes.find((n) => n.id === d.source)!.x))
+      .attr('x2', (d) => this.xScale(nodes.find((n) => n.id === d.target)!.y))
+      .attr('y2', (d) => this.yScale(nodes.find((n) => n.id === d.target)!.x))
       .attr('stroke', '#000')
       .attr('stroke-width', (d) => Math.min(d.count, 6));
 
@@ -270,8 +274,8 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
       .enter()
       .append('circle')
       .attr('class', 'player-node')
-      .attr('cx', (d) => this.xScale(d.x))
-      .attr('cy', (d) => this.yScale(d.y))
+      .attr('cx', (d) => this.xScale(d.y))
+      .attr('cy', (d) => this.yScale(d.x))
       .attr('r', (d) => Math.max(Math.min(d.count * 3, 16), 10))
       .attr('fill', 'gray')
       .attr('stroke', 'black')
@@ -294,8 +298,8 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
       .enter()
       .append('text')
       .attr('class', 'jersey-number-text')
-      .attr('x', (d) => this.xScale(d.x))
-      .attr('y', (d) => this.yScale(d.y) + 4)
+      .attr('x', (d) => this.xScale(d.y))
+      .attr('y', (d) => this.yScale(d.x) + 4)
       .attr('text-anchor', 'middle')
       .attr('font-size', '10px')
       .attr('fill', 'black')
