@@ -43,6 +43,15 @@
 
   @if (matchEvents$ | async; as matchEvents) {
   <div class="pitch-container">
+    <div class="home-lineup">
+      <div class="name">{{ selectedMatch.home_team }} Starting XI</div>
+      <app-starting-lineup
+        [events]="matchEvents"
+        [teamName]="selectedMatch.home_team"
+        [isHomeTeam]="true"
+      ></app-starting-lineup>
+    </div>
+
     <div>
       <div class="name">{{ selectedMatch?.home_team }} Pass Network</div>
       <app-pass-network
@@ -78,6 +87,15 @@
         [events]="matchEvents"
         [teamName]="selectedMatch?.away_team"
       ></app-pass-network>
+    </div>
+
+    <div class="away-lineup">
+      <div class="name">{{ selectedMatch.away_team }} Starting XI</div>
+      <app-starting-lineup
+        [events]="matchEvents"
+        [teamName]="selectedMatch.away_team"
+        [isHomeTeam]="false"
+      ></app-starting-lineup>
     </div>
   </div>
 

@@ -16,6 +16,7 @@ import { ShotMapComponent } from '../../../../shared/components/shot-map/shot-ma
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatchStatsComponent } from '../../../../shared/components/match-stats/match-stats.component';
 import { TeamStatistics } from '../../models/statistics.model';
+import { StartingLineupComponent } from '../../../../shared/components/starting-lineup/starting-lineup.component';
 
 @Component({
   selector: 'app-selected-match',
@@ -27,6 +28,7 @@ import { TeamStatistics } from '../../models/statistics.model';
     PassNetworkComponent,
     ShotMapComponent,
     MatchStatsComponent,
+    StartingLineupComponent,
     MatProgressSpinnerModule,
   ],
   templateUrl: './selected-match.component.html',

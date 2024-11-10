@@ -5,7 +5,7 @@ import { CommonModule, AsyncPipe } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Player } from '../../models/player.model';
 import { Observable } from 'rxjs';
 import {
@@ -22,7 +22,6 @@ import {
     MatProgressSpinnerModule,
     MatTooltipModule,
     AsyncPipe,
-    RouterOutlet,
   ],
   templateUrl: './players.component.html',
   styleUrl: './players.component.scss',
