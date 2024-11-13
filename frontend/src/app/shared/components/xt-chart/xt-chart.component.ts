@@ -22,7 +22,7 @@ export interface xTPerMinute {
   styles: [
     `
       .xt-chart-container {
-        width: 600px;
+        width: 700px;
         height: 430px;
       }
     `,
@@ -60,7 +60,7 @@ export class xTChartComponent implements AfterViewInit, OnChanges {
     for (let y = 0; y < 8; y++) {
       const row = [];
       for (let x = 0; x < 12; x++) {
-        const xTValue = x / 12;
+        const xTValue = (x + 1) / 12;
         row.push(parseFloat(xTValue.toFixed(3)));
       }
       this.xTGrid.push(row);
@@ -68,11 +68,10 @@ export class xTChartComponent implements AfterViewInit, OnChanges {
   }
 
   createChart() {
-    // Clear any existing SVG
     d3.select(this.chartContainer.nativeElement).select('svg').remove();
 
     const margin = { top: 20, right: 30, bottom: 80, left: 60 };
-    const width = 600 - margin.left - margin.right;
+    const width = 700 - margin.left - margin.right;
     const height = 430 - margin.top - margin.bottom;
 
     const svg = d3
@@ -83,7 +82,6 @@ export class xTChartComponent implements AfterViewInit, OnChanges {
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    // Prepare data
     const relevantEvents = this.events().filter(
       (event) =>
         (event.type === 'Pass' || event.type === 'Carry') &&
@@ -91,31 +89,45 @@ export class xTChartComponent implements AfterViewInit, OnChanges {
     );
 
     // Calculate xT for each event
-    const xTEvents = relevantEvents.map((event) => {
-      let eventxT = this.calculateEventxT(event);
-      eventxT = parseFloat(eventxT.toFixed(2));
+    const xTEvents = relevantEvents
+      .map((event) => {
+        let eventxT = this.calculateEventxT(event);
+        eventxT = parseFloat(eventxT.toFixed(2));
 
-      // Convert timestamp to seconds
-      const timeParts = event.timestamp.split(':');
-      const hours = parseInt(timeParts[0]);
-      const minutes = parseInt(timeParts[1]);
-      const secondsAndMillis = timeParts[2].split('.');
-      const seconds = parseInt(secondsAndMillis[0]);
+        const timeParts = event.timestamp.split(':');
+        const hours = parseInt(timeParts[0], 10);
+        const minutes = parseInt(timeParts[1], 10);
+        const secondsAndMillis = timeParts[2].split('.');
+        const seconds = parseInt(secondsAndMillis[0], 10);
 
-      const timestampInSeconds = hours * 3600 + minutes * 60 + seconds;
-      const eventMinute = Math.floor(timestampInSeconds / 60);
+        const timestampInSeconds = hours * 3600 + minutes * 60 + seconds;
+        let eventMinute = Math.floor(timestampInSeconds / 60);
 
-      return {
-        minute: eventMinute,
-        team: event.team.trim().toLowerCase(),
-        xT: eventxT,
-      };
-    });
+        if (event.period === 1) {
+          if (eventMinute > 45) {
+            return null;
+          }
+        } else if (event.period === 2) {
+          eventMinute += 45;
+          if (eventMinute > 90) {
+            return null;
+          }
+        }
 
-    // Find the maximum minute in the data
+        return {
+          minute: eventMinute,
+          team: event.team.trim().toLowerCase(),
+          xT: eventxT,
+        };
+      })
+      .filter((event) => event !== null) as {
+      minute: number;
+      team: string;
+      xT: number;
+    }[];
+
     const maxMinute = d3.max(xTEvents, (d) => d.minute)!;
 
-    // Initialize xT per minute data
     const xTPerMinuteData: xTPerMinute[] = [];
 
     for (let i = 0; i <= maxMinute; i++) {
@@ -126,7 +138,6 @@ export class xTChartComponent implements AfterViewInit, OnChanges {
       });
     }
 
-    // Aggregate xT per minute per team
     xTEvents.forEach((event) => {
       const minuteData = xTPerMinuteData[event.minute];
       if (event.team === this.homeTeamName().trim().toLowerCase()) {
@@ -140,14 +151,12 @@ export class xTChartComponent implements AfterViewInit, OnChanges {
       d.awayTeamxT = -parseFloat(d.awayTeamxT.toFixed(2));
     });
 
-    // Define x-scale
     const xScale = d3
       .scaleBand()
       .domain(xTPerMinuteData.map((d) => d.minute.toString()))
       .range([0, width])
       .padding(0.1);
 
-    // Define subgroup scale for bar positioning
     const subgroups = ['home', 'away'];
     const xSubgroup = d3
       .scaleBand()
@@ -155,26 +164,22 @@ export class xTChartComponent implements AfterViewInit, OnChanges {
       .range([0, xScale.bandwidth()])
       .padding(0.05);
 
-    // Define y-scale
     const yMax = d3.max(xTPerMinuteData, (d) => Math.max(d.homeTeamxT, 0))!;
     const yMin = d3.min(xTPerMinuteData, (d) => Math.min(d.awayTeamxT, 0))!;
 
     const yScale = d3.scaleLinear().domain([yMin, yMax]).range([height, 0]);
 
-    // Define the x-axis generator for the axis line at the middle
     const xAxisMiddle = d3
       .axisBottom(xScale)
-      .tickSizeOuter(0) // Remove outer ticks
-      .tickSizeInner(0) // Remove inner ticks
-      .tickFormat(() => ''); // Remove labels
+      .tickSizeOuter(0)
+      .tickSizeInner(0)
+      .tickFormat(() => '');
 
-    // Draw x-axis line at yScale(0) without ticks and labels
     svg
       .append('g')
       .attr('transform', `translate(0, ${yScale(0)})`)
       .call(xAxisMiddle);
 
-    // Define the bottom x-axis generator with labels
     const xAxisBottom = d3
       .axisBottom(xScale)
       .tickValues(xScale.domain().filter((d) => parseInt(d, 10) % 5 === 0))
@@ -182,7 +187,6 @@ export class xTChartComponent implements AfterViewInit, OnChanges {
       .tickSize(0)
       .tickSizeOuter(0);
 
-    // Draw x-axis labels at the bottom of the chart
     svg
       .append('g')
       .attr('transform', `translate(0, ${height})`)
@@ -290,7 +294,6 @@ export class xTChartComponent implements AfterViewInit, OnChanges {
     let endLocation = event.pass_end_location || event.carry_end_location;
 
     if (!endLocation) {
-      // If no end location, xT cannot be calculated
       return 0;
     }
 
@@ -299,15 +302,21 @@ export class xTChartComponent implements AfterViewInit, OnChanges {
     const originxT = this.xTGrid[startCell.yIndex][startCell.xIndex];
     const destinationxT = this.xTGrid[endCell.yIndex][endCell.xIndex];
 
-    return parseFloat((destinationxT - originxT).toFixed(3));
+    let xTValue = parseFloat((destinationxT - originxT).toFixed(3));
+
+    if (xTValue < 0) {
+      xTValue = 0;
+    }
+
+    return xTValue;
   }
 
   getGridCell(x: number, y: number): { xIndex: number; yIndex: number } {
-    const gridWidth = 120 / 12; // 10 meters per cell
-    const gridHeight = 80 / 8; // 10 meters per cell
+    const gridWidth = 120 / 12;
+    const gridHeight = 80 / 8;
 
-    const xIndex = Math.min(Math.floor(x / gridWidth), 11); // 0 to 11
-    const yIndex = Math.min(Math.floor(y / gridHeight), 7); // 0 to 7
+    const xIndex = Math.min(Math.floor(x / gridWidth), 11);
+    const yIndex = Math.min(Math.floor(y / gridHeight), 7);
 
     return { xIndex, yIndex };
   }
