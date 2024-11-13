@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
   selectMatchEvents,
-  selectMatchEventsLoading,
   selectMatchStatistics,
   selectSelectedMatch,
 } from '../../state/competitions.selectors';
@@ -17,6 +16,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatchStatsComponent } from '../../../../shared/components/match-stats/match-stats.component';
 import { TeamStatistics } from '../../models/statistics.model';
 import { StartingLineupComponent } from '../../../../shared/components/starting-lineup/starting-lineup.component';
+import { ProgressivePassesComponent } from '../../../../shared/components/progressive-passes/progressive-passes.component';
+import { xTChartComponent } from '../../../../shared/components/xt-chart/xt-chart.component';
 
 @Component({
   selector: 'app-selected-match',
@@ -29,6 +30,8 @@ import { StartingLineupComponent } from '../../../../shared/components/starting-
     ShotMapComponent,
     MatchStatsComponent,
     StartingLineupComponent,
+    ProgressivePassesComponent,
+    xTChartComponent,
     MatProgressSpinnerModule,
   ],
   templateUrl: './selected-match.component.html',

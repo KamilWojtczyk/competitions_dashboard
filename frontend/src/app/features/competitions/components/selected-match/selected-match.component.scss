@@ -62,8 +62,9 @@
     }
   }
 
-  .pitch-container {
+  .top-stats-container {
     display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
     gap: 20px;
     overflow-x: auto;
@@ -101,4 +102,11 @@
       }
     }
   }
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 20px;
+  width: 100%;
 }

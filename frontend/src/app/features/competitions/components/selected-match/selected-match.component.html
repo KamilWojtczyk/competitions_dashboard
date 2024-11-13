@@ -42,60 +42,93 @@
   </div>
 
   @if (matchEvents$ | async; as matchEvents) {
-  <div class="pitch-container">
-    <div class="home-lineup">
-      <div class="name">{{ selectedMatch.home_team }} Starting XI</div>
-      <app-starting-lineup
-        [events]="matchEvents"
-        [teamName]="selectedMatch.home_team"
-        [isHomeTeam]="true"
-      ></app-starting-lineup>
-    </div>
-
-    <div>
-      <div class="name">{{ selectedMatch?.home_team }} Pass Network</div>
-      <app-pass-network
-        [events]="matchEvents"
-        [teamName]="selectedMatch?.home_team"
-      ></app-pass-network>
-    </div>
-
-    <div>
-      <app-match-stats
-        [statistics]="statistics$ | async"
-        [homeTeamName]="selectedMatch.home_team"
-        [awayTeamName]="selectedMatch.away_team"
-      ></app-match-stats>
-
-      <div class="shot-map">
-        <div class="name">Shot Map</div>
-        <div class="teams">
-          <span>{{ selectedMatch?.away_team }}</span>
-          <span>{{ selectedMatch?.home_team }}</span>
-        </div>
-        <app-shot-map
+  <div class="top-stats-container">
+    <div class="flex-container">
+      <div class="home-lineup">
+        <div class="name">{{ selectedMatch.home_team }} Starting XI</div>
+        <app-starting-lineup
           [events]="matchEvents"
-          [homeTeamName]="selectedMatch?.home_team"
-          [awayTeamName]="selectedMatch?.away_team"
-        ></app-shot-map>
+          [teamName]="selectedMatch.home_team"
+          [isHomeTeam]="true"
+        ></app-starting-lineup>
+      </div>
+
+      <div>
+        <div class="name">{{ selectedMatch?.home_team }} Pass Network</div>
+        <app-pass-network
+          [events]="matchEvents"
+          [teamName]="selectedMatch?.home_team"
+        ></app-pass-network>
+      </div>
+
+      <div>
+        <app-match-stats
+          [statistics]="statistics$ | async"
+          [homeTeamName]="selectedMatch.home_team"
+          [awayTeamName]="selectedMatch.away_team"
+        ></app-match-stats>
+
+        <div class="shot-map">
+          <div class="name">Shot Map</div>
+          <div class="teams">
+            <span>{{ selectedMatch?.away_team }}</span>
+            <span>{{ selectedMatch?.home_team }}</span>
+          </div>
+          <app-shot-map
+            [events]="matchEvents"
+            [homeTeamName]="selectedMatch?.home_team"
+            [awayTeamName]="selectedMatch?.away_team"
+          ></app-shot-map>
+        </div>
+      </div>
+
+      <div>
+        <div class="name">{{ selectedMatch?.away_team }} Pass Network</div>
+        <app-pass-network
+          [events]="matchEvents"
+          [teamName]="selectedMatch?.away_team"
+        ></app-pass-network>
+      </div>
+
+      <div class="away-lineup">
+        <div class="name">{{ selectedMatch.away_team }} Starting XI</div>
+        <app-starting-lineup
+          [events]="matchEvents"
+          [teamName]="selectedMatch.away_team"
+          [isHomeTeam]="false"
+        ></app-starting-lineup>
       </div>
     </div>
+    <div class="flex-container">
+      <div class="progressive-passes">
+        <div class="name">
+          {{ selectedMatch?.home_team }} Progressive Passes
+        </div>
+        <app-progressive-passes
+          [events]="matchEvents"
+          [teamName]="selectedMatch?.home_team"
+          [isHomeTeam]="true"
+        ></app-progressive-passes>
+      </div>
+      <div class="xt-chart">
+        <div class="name">Match Momentum by xT</div>
+        <app-xt-chart
+          [events]="matchEvents"
+          [homeTeamName]="selectedMatch.home_team"
+          [awayTeamName]="selectedMatch.away_team"
+        ></app-xt-chart>
+      </div>
 
-    <div>
-      <div class="name">{{ selectedMatch?.away_team }} Pass Network</div>
-      <app-pass-network
-        [events]="matchEvents"
-        [teamName]="selectedMatch?.away_team"
-      ></app-pass-network>
-    </div>
-
-    <div class="away-lineup">
-      <div class="name">{{ selectedMatch.away_team }} Starting XI</div>
-      <app-starting-lineup
-        [events]="matchEvents"
-        [teamName]="selectedMatch.away_team"
-        [isHomeTeam]="false"
-      ></app-starting-lineup>
+      <div class="progressive-passes">
+        <div class="name">
+          {{ selectedMatch?.away_team }} Progressive Passes
+        </div>
+        <app-progressive-passes
+          [events]="matchEvents"
+          [teamName]="selectedMatch?.away_team"
+          [isHomeTeam]="false"
+        ></app-progressive-passes>
+      </div>
     </div>
   </div>
 
