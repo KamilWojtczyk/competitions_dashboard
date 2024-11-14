@@ -52,11 +52,13 @@
         .team-name {
           font-size: 1.2em;
           margin: 0 10px;
+          width: 33%;
         }
 
         .score {
           font-size: 1.5em;
           font-weight: bold;
+          width: 33%;
         }
       }
     }
@@ -99,6 +101,10 @@
         text-align: center;
         font-family: $u-lex-and-deca-medium-font;
         width: 100%;
+
+        span {
+          width: 50%;
+        }
       }
     }
   }

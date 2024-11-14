@@ -22,7 +22,7 @@ export interface xTPerMinute {
   styles: [
     `
       .xt-chart-container {
-        width: 700px;
+        width: 600px;
         height: 430px;
       }
     `,
@@ -71,7 +71,7 @@ export class xTChartComponent implements AfterViewInit, OnChanges {
     d3.select(this.chartContainer.nativeElement).select('svg').remove();
 
     const margin = { top: 20, right: 30, bottom: 80, left: 60 };
-    const width = 700 - margin.left - margin.right;
+    const width = 600 - margin.left - margin.right;
     const height = 430 - margin.top - margin.bottom;
 
     const svg = d3

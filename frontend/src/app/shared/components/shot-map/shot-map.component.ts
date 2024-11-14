@@ -90,7 +90,7 @@ export class ShotMapComponent implements OnChanges, AfterViewInit {
         let [x, y] = shot.location;
 
         // Flip coordinates for away team
-        if (shot.team === this.awayTeamName()) {
+        if (shot.team === this.homeTeamName()) {
           x = this.pitchLength - x;
           y = this.pitchWidth - y;
         }

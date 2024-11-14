@@ -18,6 +18,7 @@ import { TeamStatistics } from '../../models/statistics.model';
 import { StartingLineupComponent } from '../../../../shared/components/starting-lineup/starting-lineup.component';
 import { ProgressivePassesComponent } from '../../../../shared/components/progressive-passes/progressive-passes.component';
 import { xTChartComponent } from '../../../../shared/components/xt-chart/xt-chart.component';
+import { HeatMapComponent } from '../../../../shared/components/heat-map/heat-map.component';
 
 @Component({
   selector: 'app-selected-match',
@@ -32,6 +33,7 @@ import { xTChartComponent } from '../../../../shared/components/xt-chart/xt-char
     StartingLineupComponent,
     ProgressivePassesComponent,
     xTChartComponent,
+    HeatMapComponent,
     MatProgressSpinnerModule,
   ],
   templateUrl: './selected-match.component.html',
