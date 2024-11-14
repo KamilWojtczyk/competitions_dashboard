@@ -1,14 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  catchError,
-  debounceTime,
-  filter,
-  map,
-  of,
-  switchMap,
-  takeUntil,
-} from 'rxjs';
+import { catchError, debounceTime, filter, map, of, switchMap } from 'rxjs';
 import {
   loadCompetitions,
   loadCompetitionsFailure,
@@ -99,7 +91,6 @@ export class CompetitionsEffects {
             competition.competition_gender
           )
           .pipe(
-            takeUntil(this.actions$.pipe(ofType(loadCompetitions))),
             map((topScorers) => loadTopScorersSuccess({ topScorers })),
             catchError(() => of(loadTopScorersFailure()))
           )
@@ -128,7 +119,6 @@ export class CompetitionsEffects {
             competition.competition_gender
           )
           .pipe(
-            takeUntil(this.actions$.pipe(ofType(loadCompetitions))),
             map((topAssists) => loadTopAssistsSuccess({ topAssists })),
             catchError(() => of(loadTopAssistsFailure()))
           )
@@ -150,7 +140,6 @@ export class CompetitionsEffects {
         this.competitionsHttpService
           .getPlayers(competition?.competition_id, competition?.season_id)
           .pipe(
-            takeUntil(this.actions$.pipe(ofType(loadCompetitions))),
             map((players) => loadPlayersSuccess({ players })),
             catchError(() => of(loadPlayersFailure()))
           )

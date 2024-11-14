@@ -89,7 +89,10 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
     // Collect jersey numbers from all tactics events
     const tacticsEvents = eventsWithNewSecond.filter(
       (event) =>
-        event.team === this.teamName() && event.tactics && event.tactics.lineup
+        event.team === this.teamName() &&
+        event.type === 'Starting XI' &&
+        event.tactics &&
+        event.tactics.lineup
     );
 
     const jerseyNumberMap: { [playerId: string]: string } = {};
@@ -121,14 +124,8 @@ export class PassNetworkComponent implements OnChanges, AfterViewInit {
     let firstSubSecond =
       subEvents.length > 0
         ? Math.min(...subEvents.map((e) => e.newsecond))
-        : 90 * 60; // Assume full match if no substitution
+        : 90 * 60;
 
-    // If first substitution is before or at halftime, set to halftime (45 * 60 seconds)
-    if (firstSubSecond <= 45 * 60) {
-      firstSubSecond = 45 * 60;
-    }
-
-    // Filter passes before the first substitution
     const passes = teamEvents.filter(
       (event) => event.type === 'Pass' && event.newsecond < firstSubSecond
     );

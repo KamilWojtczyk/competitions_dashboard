@@ -42,7 +42,7 @@
   </div>
 
   @if (matchEvents$ | async; as matchEvents) {
-  <div class="top-stats-container">
+  <div class="stats-container">
     <div class="flex-container">
       <div class="home-lineup">
         <div class="name">{{ selectedMatch.home_team }} Starting XI</div>
@@ -140,6 +140,15 @@
           [orientation]="'horizontal'"
           [isHomeTeam]="true"
         ></app-heat-map>
+      </div>
+
+      <div class="xg-timeline">
+        <div class="name">Shot Quality Timeline (Cumulative xG)</div>
+        <app-shot-quality-timeline
+          [events]="matchEvents"
+          [homeTeamName]="selectedMatch?.home_team"
+          [awayTeamName]="selectedMatch?.away_team"
+        ></app-shot-quality-timeline>
       </div>
 
       <div class="heat-map">
