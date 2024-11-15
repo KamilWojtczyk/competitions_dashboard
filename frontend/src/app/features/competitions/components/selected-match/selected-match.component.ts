@@ -20,6 +20,7 @@ import { ProgressivePassesComponent } from '../../../../shared/components/progre
 import { xTChartComponent } from '../../../../shared/components/xt-chart/xt-chart.component';
 import { HeatMapComponent } from '../../../../shared/components/heat-map/heat-map.component';
 import { ShotQualityTimelineComponent } from '../../../../shared/components/shot-quality-timeline/shot-quality-timeline.component';
+import { PassDirectionLengthDistributionComponent } from '../../../../shared/components/pass-direction-length-distribution/pass-direction-length-distribution.component';
 
 @Component({
   selector: 'app-selected-match',
@@ -36,6 +37,7 @@ import { ShotQualityTimelineComponent } from '../../../../shared/components/shot
     xTChartComponent,
     HeatMapComponent,
     ShotQualityTimelineComponent,
+    PassDirectionLengthDistributionComponent,
     MatProgressSpinnerModule,
   ],
   templateUrl: './selected-match.component.html',

@@ -161,6 +161,28 @@
         ></app-heat-map>
       </div>
     </div>
+
+    <div class="flex-container">
+      <div class="pass-direction-lenght-distribution">
+        <div class="name">
+          {{ selectedMatch.home_team }} Pass Direction and Length Distribution
+        </div>
+        <app-pass-direction-length-distribution
+          [events]="matchEvents"
+          [teamName]="selectedMatch?.home_team"
+        ></app-pass-direction-length-distribution>
+      </div>
+
+      <div class="pass-direction-lenght-distribution">
+        <div class="name">
+          {{ selectedMatch.away_team }} Pass Direction and Length Distribution
+        </div>
+        <app-pass-direction-length-distribution
+          [events]="matchEvents"
+          [teamName]="selectedMatch?.away_team"
+        ></app-pass-direction-length-distribution>
+      </div>
+    </div>
   </div>
 
   } @else {

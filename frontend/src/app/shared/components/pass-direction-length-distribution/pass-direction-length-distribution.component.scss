@@ -1,0 +1,17 @@
+@import "variables";
+@import "palette";
+
+.chart-container {
+  width: 600px;
+  height: 400px;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: white;
+  padding: 5px;
+  border: 1px solid black;
+  pointer-events: none;
+  opacity: 0;
+  font-family: $u-lex-and-deca-light-font;
+}
