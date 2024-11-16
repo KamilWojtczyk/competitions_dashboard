@@ -173,6 +173,19 @@
         ></app-pass-direction-length-distribution>
       </div>
 
+      <div class="cross-map">
+        <div class="name">Crosses Map</div>
+        <div class="teams">
+          <span>{{ selectedMatch?.home_team }}</span>
+          <span>{{ selectedMatch?.away_team }}</span>
+        </div>
+        <app-cross-map
+          [events]="matchEvents"
+          [homeTeamName]="selectedMatch?.home_team"
+          [awayTeamName]="selectedMatch?.away_team"
+        ></app-cross-map>
+      </div>
+
       <div class="pass-direction-lenght-distribution">
         <div class="name">
           {{ selectedMatch.away_team }} Pass Direction and Length Distribution
@@ -181,6 +194,50 @@
           [events]="matchEvents"
           [teamName]="selectedMatch?.away_team"
         ></app-pass-direction-length-distribution>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="press-resistance-map">
+        <div class="name">
+          {{ selectedMatch.home_team }} Press Resistance Map
+        </div>
+        <app-press-resistance-map
+          [events]="matchEvents"
+          [teamName]="selectedMatch.home_team"
+          [isHomeTeam]="true"
+        ></app-press-resistance-map>
+      </div>
+
+      <div class="press-resistance-map">
+        <div class="name">
+          {{ selectedMatch.away_team }} Press Resistance Map
+        </div>
+        <app-press-resistance-map
+          [events]="matchEvents"
+          [teamName]="selectedMatch.away_team"
+          [isHomeTeam]="false"
+        ></app-press-resistance-map>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="transition-map">
+        <div class="name">{{ selectedMatch.home_team }} Transition Map</div>
+        <app-transition-map
+          [events]="matchEvents"
+          [teamName]="selectedMatch.home_team"
+          [isHomeTeam]="true"
+        ></app-transition-map>
+      </div>
+
+      <div class="transition-map">
+        <div class="name">{{ selectedMatch.away_team }} Transition Map</div>
+        <app-transition-map
+          [events]="matchEvents"
+          [teamName]="selectedMatch.away_team"
+          [isHomeTeam]="false"
+        ></app-transition-map>
       </div>
     </div>
   </div>

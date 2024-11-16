@@ -1,0 +1,13 @@
+@import "variables";
+@import "palette";
+
+.tooltip {
+  position: absolute;
+  background-color: white;
+  padding: 5px;
+  border: 1px solid black;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  font-size: 12px;
+}

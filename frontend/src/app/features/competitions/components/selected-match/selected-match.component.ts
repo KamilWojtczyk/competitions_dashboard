@@ -21,6 +21,9 @@ import { xTChartComponent } from '../../../../shared/components/xt-chart/xt-char
 import { HeatMapComponent } from '../../../../shared/components/heat-map/heat-map.component';
 import { ShotQualityTimelineComponent } from '../../../../shared/components/shot-quality-timeline/shot-quality-timeline.component';
 import { PassDirectionLengthDistributionComponent } from '../../../../shared/components/pass-direction-length-distribution/pass-direction-length-distribution.component';
+import { CrossMapComponent } from '../../../../shared/components/cross-map/cross-map.component';
+import { PressResistanceMapComponent } from '../../../../shared/components/press-resistance-map/press-resistance-map.component';
+import { TransitionMapComponent } from '../../../../shared/components/transition-map/transition-map.component';
 
 @Component({
   selector: 'app-selected-match',
@@ -38,6 +41,9 @@ import { PassDirectionLengthDistributionComponent } from '../../../../shared/com
     HeatMapComponent,
     ShotQualityTimelineComponent,
     PassDirectionLengthDistributionComponent,
+    CrossMapComponent,
+    PressResistanceMapComponent,
+    TransitionMapComponent,
     MatProgressSpinnerModule,
   ],
   templateUrl: './selected-match.component.html',
