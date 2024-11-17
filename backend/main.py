@@ -29,7 +29,8 @@ sb.public.get_response = custom_get_response
 app = FastAPI()
 
 origins = [
-    "http://localhost:4200",  # Angular app running on this origin
+    "http://localhost:4200",  # For Local Development
+    "https://competitions-dashboard.onrender.com" # For Production
     # Add other origins if needed, e.g., production URLs
 ]
 
