@@ -12,6 +12,20 @@ from models.player_model import Player
 from models.events_model import Event
 from fastapi.concurrency import run_in_threadpool
 
+import requests
+
+def custom_get_response(path):
+    headers = {
+        'User-Agent': 'MatchStatsApp/1.0',  # Replace with your app's name and version
+        'Accept': 'application/vnd.github.v3.raw',
+    }
+    response = requests.get(path, headers=headers)
+    response.raise_for_status()
+    return response.json()
+
+# Apply the monkey patch
+sb.public.get_response = custom_get_response
+
 app = FastAPI()
 
 origins = [
