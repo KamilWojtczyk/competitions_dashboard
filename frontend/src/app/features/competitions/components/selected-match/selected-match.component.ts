@@ -7,6 +7,7 @@ import {
   selectMatchEvents,
   selectMatchStatistics,
   selectSelectedMatch,
+  selectTopPlayerStats,
 } from '../../state/competitions.selectors';
 import { selectedMatchScreenInitialied } from '../../state/competitions.actions';
 import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
@@ -24,6 +25,13 @@ import { PassDirectionLengthDistributionComponent } from '../../../../shared/com
 import { CrossMapComponent } from '../../../../shared/components/cross-map/cross-map.component';
 import { PressResistanceMapComponent } from '../../../../shared/components/press-resistance-map/press-resistance-map.component';
 import { TransitionMapComponent } from '../../../../shared/components/transition-map/transition-map.component';
+import { Zone14AnalysisComponent } from '../../../../shared/components/zone14-analysis/zone14-analysis.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { TopDefenderPitchComponent } from '../../../../shared/components/top-defender-pitch/top-defender-pitch.component';
+import { TopDefendersBarChartComponent } from '../../../../shared/components/top-defenders-bar-chart/top-defenders-bar-chart.component';
+import { TopPasserPitchComponent } from '../../../../shared/components/top-passer-pitch/top-passer-pitch.component';
+import { TopPassersBarChartComponent } from '../../../../shared/components/top-passers-bar-chart/top-passers-bar-chart.component';
+import { MatchTopPlayerStats } from '../../models/player.model';
 
 @Component({
   selector: 'app-selected-match',
@@ -44,7 +52,13 @@ import { TransitionMapComponent } from '../../../../shared/components/transition
     CrossMapComponent,
     PressResistanceMapComponent,
     TransitionMapComponent,
+    Zone14AnalysisComponent,
+    TopPasserPitchComponent,
+    TopPassersBarChartComponent,
+    TopDefenderPitchComponent,
+    TopDefendersBarChartComponent,
     MatProgressSpinnerModule,
+    MatToolbarModule,
   ],
   templateUrl: './selected-match.component.html',
   styleUrl: './selected-match.component.scss',
@@ -57,6 +71,9 @@ export class SelectedMatchComponent implements OnInit {
   statistics$: Observable<TeamStatistics[] | null> = this.store.select(
     selectMatchStatistics
   );
+
+  topPlayerStats$: Observable<MatchTopPlayerStats | null> =
+    this.store.select(selectTopPlayerStats);
 
   constructor(private store: Store) {}
 

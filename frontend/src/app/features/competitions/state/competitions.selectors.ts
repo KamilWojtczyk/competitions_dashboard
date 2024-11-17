@@ -3,6 +3,10 @@ import { CompetitionsState } from './competitions.reducer';
 import { selectCurrentRouteState } from '../../../router.selector';
 import { Breadcrumb } from '../../../shared/models/breadcrumb.model';
 import { TeamStatistics } from '../models/statistics.model';
+import { MatchTopPlayerStats } from '../models/player.model';
+import { Events } from '../models/events.model';
+import { Match } from '../models/match.model';
+import { computeTeamTopPlayerStats } from '../../../shared/func/team-top-player-stats.func';
 
 export const selectCompetitionsState =
   createFeatureSelector<CompetitionsState>('competitions');
@@ -203,6 +207,30 @@ export const selectMatchStatistics = createSelector(
         team2Value: passCompletionTeam2,
       },
     ];
+  }
+);
+
+export const selectTopPlayerStats = createSelector(
+  selectMatchEvents,
+  selectSelectedMatch,
+  (events: Events[], match: Match | null) => {
+    if (!match) return null;
+
+    const homeTeam = match.home_team;
+    const awayTeam = match.away_team;
+
+    // Separate events by team
+    const homeTeamEvents = events.filter((event) => event.team === homeTeam);
+    const awayTeamEvents = events.filter((event) => event.team === awayTeam);
+
+    // Compute stats for each team
+    const homeTeamStats = computeTeamTopPlayerStats(homeTeamEvents, homeTeam);
+    const awayTeamStats = computeTeamTopPlayerStats(awayTeamEvents, awayTeam);
+
+    return {
+      homeTeamStats,
+      awayTeamStats,
+    } as MatchTopPlayerStats;
   }
 );
 

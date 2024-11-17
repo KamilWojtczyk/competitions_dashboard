@@ -72,42 +72,43 @@
     flex-direction: column;
     justify-content: space-evenly;
     gap: 20px;
-    overflow-x: auto;
+    overflow-x: hidden;
     width: 100%;
     height: 100%;
     border-top: 4px solid $deep-teal;
     padding-top: 10px;
 
-    > div {
-      flex: 0 0 auto;
-      max-width: 100%;
-    }
-
-    .home-lineup,
-    .away-lineup {
-      width: 250px;
-    }
-
-    .name {
-      text-align: center;
-      font-size: 15px;
-      font-family: $u-lex-and-deca-medium-font;
-    }
-
-    .shot-map {
+    .flex-container {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+      width: 100%;
+      gap: 20px;
+
+      .flex-item {
+        padding: 10px;
+      }
+
+      .lineup {
+        display: flex;
+        gap: 10px;
+      }
+
+      .name {
+        text-align: center;
+        font-size: 15px;
+        font-family: $u-lex-and-deca-medium-font;
+        margin-bottom: 10px;
+      }
+
+      .shot-map {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
     }
   }
-}
-
-.flex-container {
-  display: flex;
-  justify-content: space-evenly;
-  gap: 20px;
-  width: 100%;
 }
 
 .teams {

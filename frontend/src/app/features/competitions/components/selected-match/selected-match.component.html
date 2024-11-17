@@ -44,24 +44,26 @@
   @if (matchEvents$ | async; as matchEvents) {
   <div class="stats-container">
     <div class="flex-container">
-      <div class="home-lineup">
-        <div class="name">{{ selectedMatch.home_team }} Starting XI</div>
-        <app-starting-lineup
-          [events]="matchEvents"
-          [teamName]="selectedMatch.home_team"
-          [isHomeTeam]="true"
-        ></app-starting-lineup>
+      <div class="flex-item lineup">
+        <div>
+          <div class="name">{{ selectedMatch.home_team }} Starting XI</div>
+          <app-starting-lineup
+            [events]="matchEvents"
+            [teamName]="selectedMatch.home_team"
+            [isHomeTeam]="true"
+          ></app-starting-lineup>
+        </div>
+
+        <div>
+          <div class="name">{{ selectedMatch?.home_team }} Pass Network</div>
+          <app-pass-network
+            [events]="matchEvents"
+            [teamName]="selectedMatch?.home_team"
+          ></app-pass-network>
+        </div>
       </div>
 
-      <div>
-        <div class="name">{{ selectedMatch?.home_team }} Pass Network</div>
-        <app-pass-network
-          [events]="matchEvents"
-          [teamName]="selectedMatch?.home_team"
-        ></app-pass-network>
-      </div>
-
-      <div>
+      <div class="flex-item">
         <app-match-stats
           [statistics]="statistics$ | async"
           [homeTeamName]="selectedMatch.home_team"
@@ -82,25 +84,27 @@
         </div>
       </div>
 
-      <div>
-        <div class="name">{{ selectedMatch?.away_team }} Pass Network</div>
-        <app-pass-network
-          [events]="matchEvents"
-          [teamName]="selectedMatch?.away_team"
-        ></app-pass-network>
-      </div>
+      <div class="flex-item lineup">
+        <div>
+          <div class="name">{{ selectedMatch?.away_team }} Pass Network</div>
+          <app-pass-network
+            [events]="matchEvents"
+            [teamName]="selectedMatch?.away_team"
+          ></app-pass-network>
+        </div>
 
-      <div class="away-lineup">
-        <div class="name">{{ selectedMatch.away_team }} Starting XI</div>
-        <app-starting-lineup
-          [events]="matchEvents"
-          [teamName]="selectedMatch.away_team"
-          [isHomeTeam]="false"
-        ></app-starting-lineup>
+        <div>
+          <div class="name">{{ selectedMatch.away_team }} Starting XI</div>
+          <app-starting-lineup
+            [events]="matchEvents"
+            [teamName]="selectedMatch.away_team"
+            [isHomeTeam]="false"
+          ></app-starting-lineup>
+        </div>
       </div>
     </div>
     <div class="flex-container">
-      <div class="progressive-passes">
+      <div class="flex-item">
         <div class="name">
           {{ selectedMatch?.home_team }} Progressive Passes
         </div>
@@ -110,7 +114,7 @@
           [isHomeTeam]="true"
         ></app-progressive-passes>
       </div>
-      <div class="xt-chart">
+      <div class="flex-item">
         <div class="name">Match Momentum by xT</div>
         <app-xt-chart
           [events]="matchEvents"
@@ -119,7 +123,7 @@
         ></app-xt-chart>
       </div>
 
-      <div class="progressive-passes">
+      <div class="flex-item">
         <div class="name">
           {{ selectedMatch?.away_team }} Progressive Passes
         </div>
@@ -132,7 +136,7 @@
     </div>
 
     <div class="flex-container">
-      <div class="heat-map">
+      <div class="flex-item">
         <div class="name">{{ selectedMatch.home_team }} Heat Map</div>
         <app-heat-map
           [events]="matchEvents"
@@ -142,7 +146,7 @@
         ></app-heat-map>
       </div>
 
-      <div class="xg-timeline">
+      <div class="flex-item">
         <div class="name">Shot Quality Timeline (Cumulative xG)</div>
         <app-shot-quality-timeline
           [events]="matchEvents"
@@ -151,7 +155,7 @@
         ></app-shot-quality-timeline>
       </div>
 
-      <div class="heat-map">
+      <div class="flex-item">
         <div class="name">{{ selectedMatch.away_team }} Heat Map</div>
         <app-heat-map
           [events]="matchEvents"
@@ -163,7 +167,7 @@
     </div>
 
     <div class="flex-container">
-      <div class="pass-direction-lenght-distribution">
+      <div class="flex-item">
         <div class="name">
           {{ selectedMatch.home_team }} Pass Direction and Length Distribution
         </div>
@@ -173,7 +177,7 @@
         ></app-pass-direction-length-distribution>
       </div>
 
-      <div class="cross-map">
+      <div class="flex-item">
         <div class="name">Crosses Map</div>
         <div class="teams">
           <span>{{ selectedMatch?.home_team }}</span>
@@ -186,7 +190,7 @@
         ></app-cross-map>
       </div>
 
-      <div class="pass-direction-lenght-distribution">
+      <div class="flex-item">
         <div class="name">
           {{ selectedMatch.away_team }} Pass Direction and Length Distribution
         </div>
@@ -198,7 +202,7 @@
     </div>
 
     <div class="flex-container">
-      <div class="press-resistance-map">
+      <div class="flex-item">
         <div class="name">
           {{ selectedMatch.home_team }} Press Resistance Map
         </div>
@@ -209,7 +213,20 @@
         ></app-press-resistance-map>
       </div>
 
-      <div class="press-resistance-map">
+      <div class="flex-item">
+        <div class="name">Zone 14 Analysis</div>
+        <div class="teams">
+          <span>{{ selectedMatch?.home_team }}</span>
+          <span>{{ selectedMatch?.away_team }}</span>
+        </div>
+        <app-zone14-analysis
+          [events]="matchEvents"
+          [homeTeam]="selectedMatch.home_team"
+          [awayTeam]="selectedMatch.away_team"
+        ></app-zone14-analysis>
+      </div>
+
+      <div class="flex-item">
         <div class="name">
           {{ selectedMatch.away_team }} Press Resistance Map
         </div>
@@ -222,7 +239,7 @@
     </div>
 
     <div class="flex-container">
-      <div class="transition-map">
+      <div class="flex-item">
         <div class="name">{{ selectedMatch.home_team }} Transition Map</div>
         <app-transition-map
           [events]="matchEvents"
@@ -231,7 +248,7 @@
         ></app-transition-map>
       </div>
 
-      <div class="transition-map">
+      <div class="flex-item">
         <div class="name">{{ selectedMatch.away_team }} Transition Map</div>
         <app-transition-map
           [events]="matchEvents"
@@ -240,6 +257,108 @@
         ></app-transition-map>
       </div>
     </div>
+
+    @if (topPlayerStats$ | async; as topPlayerStats) {
+    <mat-toolbar class="custom-toolbar">
+      <span class="section-title">Top Players Stats</span>
+    </mat-toolbar>
+
+    <div class="flex-container">
+      <div class="flex-item">
+        <div class="name">
+          Top Passer - {{ selectedMatch.home_team }}:
+          {{ topPlayerStats.homeTeamStats.topPasserPlayer.playerName }}
+        </div>
+        <app-top-passer-pitch
+          [events]="matchEvents$ | async"
+          [playerId]="topPlayerStats.homeTeamStats.topPasserPlayer.playerId"
+          [playerName]="topPlayerStats.homeTeamStats.topPasserPlayer.playerName"
+          [teamName]="topPlayerStats.homeTeamStats.team"
+          [isHomeTeam]="true"
+        ></app-top-passer-pitch>
+      </div>
+
+      <div class="flex-item">
+        <div class="name">
+          Top Passer - {{ selectedMatch.away_team }}:
+          {{ topPlayerStats.awayTeamStats.topPasserPlayer.playerName }}
+        </div>
+        <app-top-passer-pitch
+          [events]="matchEvents$ | async"
+          [playerId]="topPlayerStats.awayTeamStats.topPasserPlayer.playerId"
+          [playerName]="topPlayerStats.awayTeamStats.topPasserPlayer.playerName"
+          [teamName]="topPlayerStats.awayTeamStats.team"
+          [isHomeTeam]="false"
+        ></app-top-passer-pitch>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item">
+        <div class="name">Top 10 Passers - {{ selectedMatch.home_team }}</div>
+        <app-top-passers-bar-chart
+          [topPassers]="topPlayerStats.homeTeamStats.topPassers"
+        ></app-top-passers-bar-chart>
+      </div>
+
+      <div class="flex-item">
+        <div class="name">Top 10 Passers - {{ selectedMatch.away_team }}</div>
+        <app-top-passers-bar-chart
+          [topPassers]="topPlayerStats.awayTeamStats.topPassers"
+        ></app-top-passers-bar-chart>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item">
+        <div class="name">
+          Top Defender - {{ selectedMatch.home_team }}:
+          {{ topPlayerStats.homeTeamStats.topDefenderPlayer.playerName }}
+        </div>
+        <app-top-defender-pitch
+          [events]="matchEvents$ | async"
+          [playerId]="topPlayerStats.homeTeamStats.topDefenderPlayer.playerId"
+          [playerName]="
+            topPlayerStats.homeTeamStats.topDefenderPlayer.playerName
+          "
+          [teamName]="topPlayerStats.homeTeamStats.team"
+          [isHomeTeam]="true"
+        ></app-top-defender-pitch>
+      </div>
+
+      <div class="flex-item">
+        <div class="name">
+          Top Defender - {{ selectedMatch.away_team }}:
+          {{ topPlayerStats.awayTeamStats.topDefenderPlayer.playerName }}
+        </div>
+        <app-top-defender-pitch
+          [events]="matchEvents$ | async"
+          [playerId]="topPlayerStats.awayTeamStats.topDefenderPlayer.playerId"
+          [playerName]="
+            topPlayerStats.awayTeamStats.topDefenderPlayer.playerName
+          "
+          [teamName]="topPlayerStats.awayTeamStats.team"
+          [isHomeTeam]="false"
+        ></app-top-defender-pitch>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item">
+        <div class="name">Top 10 Defenders - {{ selectedMatch.home_team }}</div>
+        <app-top-defenders-bar-chart
+          [topDefenders]="topPlayerStats.homeTeamStats.topDefenders"
+        ></app-top-defenders-bar-chart>
+      </div>
+
+      <div class="flex-item">
+        <div class="name">Top 10 Defenders - {{ selectedMatch.away_team }}</div>
+        <app-top-defenders-bar-chart
+          [topDefenders]="topPlayerStats.awayTeamStats.topDefenders"
+        ></app-top-defenders-bar-chart>
+      </div>
+    </div>
+    }
   </div>
 
   } @else {
