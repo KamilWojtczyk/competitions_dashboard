@@ -33,7 +33,6 @@ export const routes: Routes = [
     canActivate: [competitionsGuard],
     data: { breadcrumb: 'Match Details' },
   },
-
   {
     path: '**',
     redirectTo: '',

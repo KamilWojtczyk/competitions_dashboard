@@ -1,3 +1,4 @@
+@if (!isMobile) {
 <div class="app-container">
   <app-navbar></app-navbar>
 
@@ -8,3 +9,12 @@
 
   <app-footer></app-footer>
 </div>
+} @else {
+<div class="mobile-message">
+  <p>
+    Sorry, this application is not available on mobile devices. Please use a PC,
+    laptop, or tablet.
+  </p>
+</div>
+
+}

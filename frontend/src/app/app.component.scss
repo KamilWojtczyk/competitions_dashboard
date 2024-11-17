@@ -13,3 +13,13 @@
   align-items: center;
   overflow: hidden;
 }
+
+.mobile-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  font-size: 26px;
+  padding: 20px;
+}
