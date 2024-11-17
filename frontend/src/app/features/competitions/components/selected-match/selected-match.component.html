@@ -1,9 +1,9 @@
 @if (selectedMatch$ | async; as selectedMatch) {
 <div class="container">
   <div class="match-details">
-    <div class="team-logo">
+    <!-- <div class="team-logo">
       <img src="assets/icons/shield.svg" class="team-logo-img" />
-    </div>
+    </div> -->
 
     <div class="match-info">
       <div class="competition-name">{{ selectedMatch.competition }}</div>
@@ -36,9 +36,9 @@
       </div>
     </div>
 
-    <div class="team-logo">
+    <!-- <div class="team-logo">
       <img src="assets/icons/shield.svg" class="team-logo-img" />
-    </div>
+    </div> -->
   </div>
 
   @if (matchEvents$ | async; as matchEvents) {
