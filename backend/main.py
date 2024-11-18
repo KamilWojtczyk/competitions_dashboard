@@ -30,7 +30,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:4200",  # For Local Development
-    "https://competitions-dashboard.onrender.com" # For Production
+    "https://match-stats-49or.onrender.com" # For Production
     # Add other origins if needed, e.g., production URLs
 ]
 
