@@ -72,59 +72,59 @@ export class CompetitionsEffects {
     );
   });
 
-  loadTopScorers$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(loadMatchesSuccess),
-      concatLatestFrom(() => [
-        this.store.select(selectSelectedCompetition),
-        this.store.select(selectTopScorers),
-      ]),
-      filter(([_, selectedCompetition, topScorers]) => {
-        return !!selectedCompetition && !topScorers;
-      }),
-      switchMap(([_, competition]) =>
-        this.competitionsHttpService
-          .getTopScorers(
-            competition?.country_name,
-            competition?.competition_name,
-            competition?.season_name,
-            competition.competition_gender
-          )
-          .pipe(
-            map((topScorers) => loadTopScorersSuccess({ topScorers })),
-            catchError(() => of(loadTopScorersFailure()))
-          )
-      )
-    );
-  });
+  // loadTopScorers$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(loadMatchesSuccess),
+  //     concatLatestFrom(() => [
+  //       this.store.select(selectSelectedCompetition),
+  //       this.store.select(selectTopScorers),
+  //     ]),
+  //     filter(([_, selectedCompetition, topScorers]) => {
+  //       return !!selectedCompetition && !topScorers;
+  //     }),
+  //     switchMap(([_, competition]) =>
+  //       this.competitionsHttpService
+  //         .getTopScorers(
+  //           competition?.country_name,
+  //           competition?.competition_name,
+  //           competition?.season_name,
+  //           competition.competition_gender
+  //         )
+  //         .pipe(
+  //           map((topScorers) => loadTopScorersSuccess({ topScorers })),
+  //           catchError(() => of(loadTopScorersFailure()))
+  //         )
+  //     )
+  //   );
+  // });
 
-  loadTopAssists$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(loadMatchesSuccess),
-      debounceTime(300),
-      concatLatestFrom(() => [
-        this.store.select(selectSelectedCompetition),
-        this.store.select(selectTopAssists),
-      ]),
-      filter(
-        ([_, selectedCompetition, topAssists]) =>
-          !!selectedCompetition && !topAssists
-      ),
-      switchMap(([_, competition]) =>
-        this.competitionsHttpService
-          .getTopAssists(
-            competition?.country_name,
-            competition?.competition_name,
-            competition?.season_name,
-            competition.competition_gender
-          )
-          .pipe(
-            map((topAssists) => loadTopAssistsSuccess({ topAssists })),
-            catchError(() => of(loadTopAssistsFailure()))
-          )
-      )
-    );
-  });
+  // loadTopAssists$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(loadMatchesSuccess),
+  //     debounceTime(300),
+  //     concatLatestFrom(() => [
+  //       this.store.select(selectSelectedCompetition),
+  //       this.store.select(selectTopAssists),
+  //     ]),
+  //     filter(
+  //       ([_, selectedCompetition, topAssists]) =>
+  //         !!selectedCompetition && !topAssists
+  //     ),
+  //     switchMap(([_, competition]) =>
+  //       this.competitionsHttpService
+  //         .getTopAssists(
+  //           competition?.country_name,
+  //           competition?.competition_name,
+  //           competition?.season_name,
+  //           competition.competition_gender
+  //         )
+  //         .pipe(
+  //           map((topAssists) => loadTopAssistsSuccess({ topAssists })),
+  //           catchError(() => of(loadTopAssistsFailure()))
+  //         )
+  //     )
+  //   );
+  // });
 
   loadPlayers$ = createEffect(() => {
     return this.actions$.pipe(
