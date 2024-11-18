@@ -25,6 +25,8 @@ def custom_get_response(path):
 
 # Apply the monkey patch
 sb.public.get_response = custom_get_response
+sb.competition_events.get_response = custom_get_response
+sb.events.get_response = custom_get_response
 
 app = FastAPI()
 
@@ -37,8 +39,8 @@ origins = [
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],             # List of allowed origins
-    allow_credentials=False,           # Whether to allow credentials (cookies, etc.)
+    allow_origins=origins,            # List of allowed origins
+    allow_credentials=True,           # Whether to allow credentials (cookies, etc.)
     allow_methods=["*"],               # List of allowed HTTP methods
     allow_headers=["*"],               # List of allowed headers
 )
