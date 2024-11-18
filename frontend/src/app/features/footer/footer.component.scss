@@ -8,11 +8,13 @@
   justify-content: center;
   align-items: center;
   padding: 0 16px;
+  position: relative;
 }
 
 .footer-content {
   text-align: center;
   flex: 1;
+  font-size: 16px;
 }
 
 .footer-icon {
@@ -35,5 +37,22 @@
 
   &:hover {
     filter: brightness(0.8); /* Darken on hover */
+  }
+}
+
+.footer-statsbomb {
+  position: absolute;
+  left: 10px;
+  display: flex;
+  align-items: center;
+
+  a {
+    display: flex;
+    align-items: center;
+  }
+
+  .statsbomb-logo {
+    height: 20px;
+    width: auto;
   }
 }
